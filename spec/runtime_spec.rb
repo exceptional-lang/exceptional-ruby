@@ -18,11 +18,15 @@ describe Exceptional::Runtime do
                     pair_list: PairListNode.new(
                       pairs: [
                         PairNode.new(
-                          binding: StringNode.new(value: "syscall"),
-                          value: StringNode.new(value: "puts"),
+                          binding: StringNode.new(value: "io"),
+                          value: StringNode.new(value: "write"),
                         ),
                         PairNode.new(
-                          binding: StringNode.new(value: "message"),
+                          binding: StringNode.new(value: "fd"),
+                          value: NumberNode.new(value: 2),
+                        ),
+                        PairNode.new(
+                          binding: StringNode.new(value: "bytes"),
                           value: SymbolNode.new(name: "x"),
                         ),
                       ]

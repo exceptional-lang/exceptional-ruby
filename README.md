@@ -22,7 +22,16 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```exceptional
+# main.!
+
+hello = def(x) do
+  raise { "io" => "write", "fd" => 2, "bytes" => x }
+end
+
+hello("write")
+
+```
 
 ## Development
 
