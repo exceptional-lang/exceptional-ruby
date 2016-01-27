@@ -1,16 +1,8 @@
 module Exceptional
-  Environment = Struct.new(:stackframes) do
-    def initialize
+  Environment = Struct.new(:stackframes, :lexical_scope) do
+    def initialize(lexical_scope:)
       self.stackframes = []
-    end
-
-    def get(name)
-    end
-
-    def set(name, value)
-    end
-
-    def local_set(name, value)
+      self.lexical_scope = lexical_scope
     end
   end
 end

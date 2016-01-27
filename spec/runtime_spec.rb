@@ -50,16 +50,57 @@ end
 describe AssignNode do
   let(:string) { StringNode.new(value: "world") }
   let(:ast) do
-    AssignNode.new(
+    LocalAssignNode.new(
       binding_name: IdentifierNode.new(name: "hello"),
       value: string
     )
   end
+  let(:parent_scope) do
+    Exceptional::LexicalScope.new(parent_scope: Exceptional::LexicalScope::Null)
+  end
+  let(:lexical_scope) do
+    Exceptional::LexicalScope.new(parent_scope: parent_scope)
+  end
+  let(:environment) do
+    Exceptional::Environment.new(lexical_scope: lexical_scope)
+  end
 
-  let(:environment) { Exceptional::Environment.new }
+  before do
+    parent_scope.local_set("hello", "world")
+  end
+
+  it "modifies the existing binding" do
+    ast.eval(environment)
+    expect(lexical_scope.get("hello").value).to eq("world")
+    expect(parent_scope.get("hello").value).to eq("world")
+  end
+
+  it "does not create a new binding" do
+    expect(lexical_scope.get("hello")).to be_equal(
+      parent_scope.get("hello")
+    )
+  end
+
+  pending "it raises if the binding doesn't exist"
+end
+
+describe LocalAssignNode do
+  let(:string) { StringNode.new(value: "world") }
+  let(:ast) do
+    LocalAssignNode.new(
+      binding_name: IdentifierNode.new(name: "hello"),
+      value: string
+    )
+  end
+  let(:lexical_scope) do
+    Exceptional::LexicalScope.new(parent_scope: Exceptional::LexicalScope::Null)
+  end
+  let(:environment) do
+    Exceptional::Environment.new(lexical_scope: lexical_scope)
+  end
 
   it "modifies the environment" do
     ast.eval(environment)
-    expect(environment.get("hello")).to eq(string)
+    expect(lexical_scope.get("hello").value).to eq("world")
   end
 end

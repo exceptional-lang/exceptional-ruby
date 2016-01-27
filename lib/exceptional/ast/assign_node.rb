@@ -7,7 +7,7 @@ module Exceptional
       end
 
       def eval(environment)
-        environment.set(binding_name.name, value.eval(environment))
+        environment.lexical_scope.set(binding_name.name, value.eval(environment))
       end
     end
   end
