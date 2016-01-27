@@ -1,8 +1,8 @@
 module Exceptional
   module Ast
     class BlockNode
-      def initialize(root:)
-        @root = root
+      def initialize(expressions:)
+        @expressions = expressions
       end
     end
   end
