@@ -2,7 +2,7 @@ class Exceptional::Parser
 
 token DEF DO END RAISE
 token LPAREN RPAREN LBRACE RBRACE HASHROCKET COMMA
-token STRING SYMBOL NUMBER
+token STRING IDENTIFIER NUMBER
 token EQ
 
 rule
@@ -21,9 +21,9 @@ rule
   ;
 
   Assignment
-  : SYMBOL EQ Expression {
+  : IDENTIFIER EQ Expression {
     result = Ast::AssignNode.new(
-      binding: Ast::SymbolNode.new(val[0]),
+      binding: Ast::IdentifierNode.new(val[0]),
       value: val[1],
     )
   }

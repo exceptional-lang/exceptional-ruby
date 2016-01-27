@@ -3,14 +3,13 @@ require 'spec_helper'
 include Exceptional::Ast
 
 describe Exceptional::Runtime do
-
   it "can evaluate some stuff" do
     ast = BlockNode.new(
       expressions: [
         AssignNode.new(
-          binding: SymbolNode.new(name: "hello"),
+          binding_name: IdentifierNode.new(name: "hello"),
           value: FunctionNode.new(
-            param_list: ParamListNode.new(bindings: ["x"]),
+            param_list: ParamListNode.new(binding_names: ["x"]),
             block: BlockNode.new(
               expressions: [
                 RaiseNode.new(
@@ -18,16 +17,16 @@ describe Exceptional::Runtime do
                     pair_list: PairListNode.new(
                       pairs: [
                         PairNode.new(
-                          binding: StringNode.new(value: "io"),
+                          binding_name: StringNode.new(value: "io"),
                           value: StringNode.new(value: "write"),
                         ),
                         PairNode.new(
-                          binding: StringNode.new(value: "fd"),
+                          binding_name: StringNode.new(value: "fd"),
                           value: NumberNode.new(value: 2),
                         ),
                         PairNode.new(
-                          binding: StringNode.new(value: "bytes"),
-                          value: SymbolNode.new(name: "x"),
+                          binding_name: StringNode.new(value: "bytes"),
+                          value: IdentifierNode.new(name: "x"),
                         ),
                       ]
                     )
@@ -38,12 +37,29 @@ describe Exceptional::Runtime do
           )
         ),
         CallNode.new(
-          expression: SymbolNode.new(name: "hello"),
+          expression: IdentifierNode.new(name: "hello"),
           param_list: [
             StringNode.new(value: "world"),
           ]
         ),
       ]
     )
+  end
+end
+
+describe AssignNode do
+  let(:string) { StringNode.new(value: "world") }
+  let(:ast) do
+    AssignNode.new(
+      binding_name: IdentifierNode.new(name: "hello"),
+      value: string
+    )
+  end
+
+  let(:environment) { Exceptional::Environment.new }
+
+  it "modifies the environment" do
+    ast.eval(environment)
+    expect(environment.get("hello")).to eq(string)
   end
 end

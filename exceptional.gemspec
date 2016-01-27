@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rexical", "~> 1.0"
   spec.add_development_dependency "racc", "~> 1.4"
+  spec.add_development_dependency "pry-byebug"
 end

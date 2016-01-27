@@ -1,7 +1,7 @@
 class Exceptional::Scanner
 macro
   BLANK [\ \t]+
-  SYMBOL [\w_][\w\d_]*
+  IDENTIFIER [\w_][\w\d_]*
   NUMBER \d+
 rule
   "[^"]*" { [:STRING, text[1, -2]] }
@@ -16,7 +16,7 @@ rule
   \} { [:RBRACE, text] }
   , { [:COMMA, text] }
   => { [:HASHROCKET, text] }
-  {SYMBOL} { [:SYMBOL, text] }
+  {IDENTIFIER} { [:IDENTIFIER, text] }
   {NUMBER} { [:NUMBER, text] }
   {BLANK}
 end

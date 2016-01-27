@@ -4,8 +4,8 @@ module Exceptional
       @block = block
     end
 
-    def run(context)
-      @block.visit(context)
+    def run(environment)
+      @block.eval(environment)
     end
   end
 end
