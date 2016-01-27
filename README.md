@@ -44,6 +44,7 @@ fib = def(n) do
 end
 
 fib(5)
+```
 
 ## Development
 
