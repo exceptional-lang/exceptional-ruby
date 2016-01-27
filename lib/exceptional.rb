@@ -1,5 +1,5 @@
 require "exceptional/version"
 
 module Exceptional
-  # Your code goes here...
+  require "exceptional/ast"
 end
