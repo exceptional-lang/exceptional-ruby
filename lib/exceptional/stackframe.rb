@@ -1,3 +1,7 @@
 module Exceptional
-  Stackframe = Struct.new(:lexical_scope)
+  Stackframe = Struct.new(:handlers) do
+    def initialize
+      self.handlers = []
+    end
+  end
 end
