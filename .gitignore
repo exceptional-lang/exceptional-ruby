@@ -1,3 +1,6 @@
+/lib/exceptional/scanner.rb
+/lib/exceptional/parser.rb
+
 /.bundle/
 /.yardoc
 /Gemfile.lock
