@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class ParamListNode
+    ParamListNode = Struct.new(:bindings) do
       def initialize(bindings:)
         @bindings = bindings
       end

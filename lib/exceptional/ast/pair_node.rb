@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class PairNode
+    PairNode = Struct.new(:binding, :value) do
       def initialize(binding:, value:)
         @binding = binding
         @value = value

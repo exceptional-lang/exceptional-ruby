@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class NumberNode
+    NumberNode = Struct.new(:value) do
       def initialize(value:)
         @value = value
       end

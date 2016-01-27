@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class BlockNode
+    BlockNode = Struct.new(:expressions) do
       def initialize(expressions:)
         @expressions = expressions
       end

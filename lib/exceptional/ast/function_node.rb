@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class FunctionNode
+    FunctionNode = Struct.new(:param_list, :block) do
       def initialize(param_list:, block:)
         @param_list = param_list
         @block = block

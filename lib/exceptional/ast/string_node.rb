@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class StringNode
+    StringNode = Struct.new(:value) do
       def initialize(value:)
         @value = value
       end

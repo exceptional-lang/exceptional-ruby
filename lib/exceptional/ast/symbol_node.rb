@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class SymbolNode
+    SymbolNode = Struct.new(:name) do
       def initialize(name:)
         @name = name
       end

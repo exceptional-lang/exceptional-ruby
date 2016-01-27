@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class PairListNode
+    PairListNode = Struct.new(:pairs) do
       def initialize(pairs:)
         @pairs = pairs
       end

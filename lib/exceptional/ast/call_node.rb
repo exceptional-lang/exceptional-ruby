@@ -1,6 +1,6 @@
 module Exceptional
   module Ast
-    class CallNode
+    CallNode = Struct.new(:expression, :param_list) do
       def initialize(expression:, param_list:)
         @expression = expression
         @param_list = param_list
