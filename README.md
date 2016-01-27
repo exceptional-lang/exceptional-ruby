@@ -36,14 +36,17 @@ hello("write")
 ```
 # fibonacci.!
 
-fib = def(a, b) do
-  raise { "io" => "write", "fd" => 2, "bytes" => "#{
+let fib = def(k) do
+  rescue { "m" => m, "k" => 1 } do
+    raise { "syscall" => "sprintf", "format" => "%d", "args" => [m], "continue" => [def(a) do
+      raise { "syscall" => "write", "fd" => 2, "bytes" => a }
+    end]}
+  end
+  rescue { "n" => n, "m" => m, "k" => k } do
+    raise { "n" => m, "m" => n + 1, "k" => k - 1 }
+  end
+  raise { "n" => 1, "m" => 1, "k" => k }
 end
-
-fib = def(n) do
-end
-
-fib(5)
 ```
 
 ## Development
