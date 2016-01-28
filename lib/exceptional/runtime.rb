@@ -1,11 +1,8 @@
 module Exceptional
-  class Runtime
-    def initialize(block:)
-      @block = block
-    end
-
-    def run(environment)
-      @block.eval(environment)
-    end
+  module Runtime
+    require "exceptional/runtime/environment"
+    require "exceptional/runtime/lexical_scope"
+    require "exceptional/runtime/runtime"
+    require "exceptional/runtime/stackframe"
   end
 end
