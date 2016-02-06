@@ -12,6 +12,7 @@ module Exceptional
     require "exceptional/ast/pair_node"
     require "exceptional/ast/param_list_node"
     require "exceptional/ast/raise_node"
+    require "exceptional/ast/rescue_node"
     require "exceptional/ast/string_node"
   end
 end

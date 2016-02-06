@@ -22,7 +22,7 @@ describe Exceptional::Runtime do
   #         binding_name: IdentifierNode.new(name: "hello"),
   #         value: FunctionNode.new(
   #           param_list: ParamListNode.new(parameters: ["x"]),
-  #           block: BlockNode.new(
+  #           block_node: BlockNode.new(
   #             expressions: [
   #               RaiseNode.new(
   #                 value: HashNode.new(
@@ -121,19 +121,22 @@ describe Exceptional::Runtime do
     let(:ast) do
       FunctionNode.new(
         param_list: ParamListNode.new(binding_names: ["x"]),
-        block: block
+        block_node: block
       )
     end
     let(:environment) do
       Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
     end
 
-    it "creates a lambda that wraps the block and the lexical scope" do
+    it "creates a Proc that wraps the block and the lexical scope" do
       value = ast.eval(environment)
-      expect(value).to be_a(Exceptional::Values::Lambda)
-      expect(value.lexical_scope).to eq(lexical_scope)
+      expect(value).to be_a(Exceptional::Values::Proc)
       expect(value.param_list).to eq(["x"])
-      expect(value.block).to eq(block)
+
+      block_value = value.block
+      expect(block_value).to be_a(Exceptional::Values::Block)
+      expect(block_value.block_node).to eq(block)
+      expect(block_value.lexical_scope.parent_scope).to eq(parent_scope)
     end
   end
 
@@ -167,10 +170,10 @@ describe Exceptional::Runtime do
     end
     let(:parameter_names) { [] }
     let(:function) do
-      Exceptional::Values::Lambda.new(
+      Exceptional::Values::Proc.new(
         param_list: parameter_names,
-        block: BlockNode.new(expressions: []),
-        lexical_scope: environment.lexical_scope,
+        block_node: BlockNode.new(expressions: []),
+        parent_scope: environment.lexical_scope,
       )
     end
 
@@ -196,14 +199,83 @@ describe Exceptional::Runtime do
       let(:parameter_names) { ["x"] }
       let(:call_param_list) { [IdentifierNode.new(name:"parent_variable")] }
 
-      it "fetches the parameters and calls the lambda" do
+      it "fetches the parameters and calls the proc" do
         expect(function).to receive(:call).with(environment, ["something"])
         ast.eval(environment)
       end
     end
 
-    context "when calling a non-lambda" do
-      pending "it fails"
+    context "when calling a non-proc" do
+      pending "raises a TypeError"
+    end
+  end
+
+  describe RescueNode do
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(
+        lexical_scope: parent_scope,
+      )
+    end
+    let(:pattern) { double }
+    let(:block) { BlockNode.new(expressions: []) }
+    let(:ast) do
+      RescueNode.new(
+        pattern: pattern,
+        block_node: block,
+      )
+    end
+
+    before { ast.eval(environment) }
+
+    it "sets up a handler in the bottom-most stackframe" do
+      handlers = environment.stackframes.last.exception_handlers
+      expect(handlers.length).to eq(1)
+
+      handler = handlers.first
+      expect(handler.pattern).to eq(pattern)
+
+      block_value = handler.block
+      expect(block_value.block_node).to eq(block)
+      expect(block_value.lexical_scope.parent_scope).to eq(parent_scope)
+    end
+  end
+
+  describe RaiseNode do
+    context "with a handler on the current stackframe" do
+      let(:environment) do
+        Exceptional::Runtime::Environment.new(
+          lexical_scope: parent_scope,
+        )
+      end
+      let(:pattern) { Exceptional::Values::Pattern.new(pattern: double()) }
+      let(:block) { BlockNode.new(expressions: []) }
+      let(:ast) do
+        RaiseNode.new(
+          value: "a",
+        )
+      end
+
+      it "finds the handler, resets the stack, and resumes execution in the handler" do
+        environment.stackframe.setup_handler(
+          pattern: pattern,
+          block_node: block,
+          parent_scope: lexical_scope,
+        )
+
+        expect(pattern).to receive(:match?).with("a").and_return(true)
+        expect(block).to receive(:eval).with(environment)
+        ast.eval(environment)
+      end
+
+      pending "resets the stack"
+    end
+
+    context "with a handler on a higher stackframe" do
+      pending "finds the handler, resets the stack, and resumes execution in the handler"
+    end
+
+    context "without a handler" do
+      pending "doesn't raise the exception"
     end
   end
 end
@@ -215,17 +287,17 @@ describe Exceptional::Values do
     )
   end
 
-  describe Exceptional::Values::Lambda do
+  describe Exceptional::Values::Proc do
     let(:environment) do
       Exceptional::Runtime::Environment.new(
         lexical_scope: parent_scope,
       )
     end
     let(:function) do
-      Exceptional::Values::Lambda.new(
+      Exceptional::Values::Proc.new(
         param_list: ["x"],
-        block: BlockNode.new(expressions: []),
-        lexical_scope: environment.lexical_scope,
+        block_node: BlockNode.new(expressions: []),
+        parent_scope: environment.lexical_scope,
       )
     end
 

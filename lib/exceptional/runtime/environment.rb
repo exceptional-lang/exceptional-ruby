@@ -7,6 +7,10 @@ module Exceptional
         stack
       end
 
+      def stackframe
+        stackframes.last
+      end
+
       def stack
         stackframes << Exceptional::Runtime::Stackframe.new
       end
