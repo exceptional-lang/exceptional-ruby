@@ -1,7 +1,10 @@
 module Exceptional
   module Ast
     require "exceptional/ast/assign_node"
+    require "exceptional/ast/binop_node"
+    require "exceptional/ast/comparison_node"
     require "exceptional/ast/block_node"
+    require "exceptional/ast/boolean_node"
     require "exceptional/ast/call_node"
     require "exceptional/ast/function_node"
     require "exceptional/ast/hash_node"

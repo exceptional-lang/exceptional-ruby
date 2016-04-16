@@ -6,7 +6,7 @@ module Exceptional
       end
 
       def eval(_)
-        value
+        Exceptional::Values::CharString.new(value: value)
       end
     end
   end

@@ -71,13 +71,18 @@ describe Exceptional::Runtime do
     end
 
     before do
-      parent_scope.local_set("hello", "world")
+      world = Exceptional::Values::CharString.new(value: "world")
+      parent_scope.local_set("hello", world)
     end
 
     it "modifies the existing binding" do
       ast.eval(environment)
-      expect(lexical_scope.get("hello")).to eq("test")
-      expect(parent_scope.get("hello")).to eq("test")
+      expect(lexical_scope.get("hello")).to eq(
+        Exceptional::Values::CharString.new(value: "test")
+      )
+      expect(parent_scope.get("hello")).to eq(
+        Exceptional::Values::CharString.new(value: "test")
+      )
     end
 
     it "does not create a new binding" do
@@ -102,7 +107,195 @@ describe Exceptional::Runtime do
 
     it "modifies the environment" do
       ast.eval(environment)
-      expect(lexical_scope.get("hello")).to eq("world")
+      expect(lexical_scope.get("hello")).to eq(
+        Exceptional::Values::CharString.new(value: "world")
+      )
+    end
+  end
+
+  describe BinopNode do
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
+    end
+
+    {
+      :+ => {
+        [1, 1] => 2,
+        [1, -1] => 0,
+      },
+      :- => {
+        [1, 1] => 0,
+        [1, -1] => 2,
+      },
+    }.each do |(operator, tests)|
+      context operator do
+        tests.each do |((left, right), result)|
+          it "#{left} #{operator} #{right} is #{result}" do
+            node = BinopNode.new(
+              op: operator,
+              left: NumberNode.new(value: left),
+              right: NumberNode.new(value: right),
+            )
+
+            expect(node.eval(environment)).to eq(Exceptional::Values::Number.new(value: result))
+          end
+        end
+      end
+    end
+  end
+
+  describe ComparisonNode do
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
+    end
+
+    {
+      :== => {
+        [4, 4] => true,
+        [4, 5] => false,
+      },
+      :!= => {
+        [4, 4] => false,
+        [4, 5] => true,
+      },
+      :< => {
+        [4, 5] => true,
+        [4, 4] => false,
+        [4, 3] => false,
+      },
+      :<= => {
+        [4, 5] => true,
+        [4, 4] => true,
+        [4, 3] => false,
+      },
+      :> => {
+        [4, 5] => false,
+        [4, 4] => false,
+        [4, 3] => true,
+      },
+      :>= => {
+        [4, 5] => false,
+        [4, 4] => true,
+        [4, 3] => true,
+      },
+    }.each do |(operator, tests)|
+      context operator do
+        tests.each do |((left, right), result)|
+          it "#{left} #{operator} #{right} is #{result}" do
+            node = ComparisonNode.new(
+              op: operator,
+              left: NumberNode.new(value: left),
+              right: NumberNode.new(value: right),
+            )
+
+            expect(node.eval(environment)).to eq(Exceptional::Values::Boolean.new(value: result))
+          end
+        end
+      end
+    end
+
+    {
+      :== => {
+        ["a", "a"] => true,
+        ["a", "b"] => false,
+      },
+      :!= => {
+        ["a", "a"] => false,
+        ["a", "b"] => true,
+      },
+      :< => {
+        ["a", "b"] => true,
+        ["a", "a"] => false,
+        ["aa", "ab"] => true,
+        ["ab", "aa"] => false,
+      },
+      :<= => {
+        ["a", "a"] => true,
+        ["a", "b"] => true,
+        ["b", "a"] => false,
+      },
+      :> => {
+        ["a", "a"] => false,
+        ["b", "a"] => true,
+        ["ab", "aa"] => true,
+        ["aa", "ab"] => false
+      },
+      :>= => {
+        ["a", "a"] => true,
+        ["b", "a"] => true,
+        ["a", "b"] => false,
+      },
+    }.each do |(operator, tests)|
+      context operator do
+        tests.each do |((left, right), result)|
+          it "#{left} #{operator} #{right} is #{result}" do
+            node = ComparisonNode.new(
+              op: operator,
+              left: StringNode.new(value: left),
+              right: StringNode.new(value: right),
+            )
+
+            expect(node.eval(environment)).to eq(Exceptional::Values::Boolean.new(value: result))
+          end
+        end
+      end
+    end
+
+    {
+      :== => {
+        [true, true] => true,
+        [true, false] => false,
+        [false, true] => false,
+        [true, true] => true,
+      },
+      :!= => {
+        [true, true] => false,
+        [false, true] => true,
+      },
+    }.each do |(operator, tests)|
+      context operator do
+        tests.each do |((left, right), result)|
+          it "#{left} #{operator} #{right} is #{result}" do
+            node = ComparisonNode.new(
+              op: operator,
+              left: BooleanNode.new(value: left),
+              right: BooleanNode.new(value: right),
+            )
+
+            expect(node.eval(environment)).to eq(Exceptional::Values::Boolean.new(value: result))
+          end
+        end
+      end
+    end
+
+    pending "TypeError"
+  end
+
+  describe BooleanNode do
+    let(:ast) do
+      BooleanNode.new(value: true)
+    end
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
+    end
+
+    it "returns a Boolean value" do
+      value = ast.eval(environment)
+      expect(value).to eq(Exceptional::Values::Boolean.new(value: true))
+    end
+  end
+
+  describe NumberNode do
+    let(:ast) do
+      NumberNode.new(value: 3)
+    end
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
+    end
+
+    it "returns a Number value" do
+      value = ast.eval(environment)
+      expect(value).to eq(Exceptional::Values::Number.new(value: 3))
     end
   end
 
