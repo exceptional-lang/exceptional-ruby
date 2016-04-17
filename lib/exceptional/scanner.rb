@@ -73,37 +73,37 @@ class Exceptional::Scanner < Racc::Parser
          action { [:HASHROCKET, text] }
 
       when (text = @ss.scan(/==/))
-         action { [:COMPARE, text.to_sym] }
+         action { [:COMPARATOR, text.to_sym] }
 
       when (text = @ss.scan(/!=/))
-         action { [:COMPARE, text.to_sym] }
+         action { [:COMPARATOR, text.to_sym] }
 
       when (text = @ss.scan(/>=/))
-         action { [:COMPARE, text.to_sym] }
+         action { [:COMPARATOR, text.to_sym] }
 
       when (text = @ss.scan(/>/))
-         action { [:COMPARE, text.to_sym] }
+         action { [:COMPARATOR, text.to_sym] }
 
       when (text = @ss.scan(/<=/))
-         action { [:COMPARE, text.to_sym] }
+         action { [:COMPARATOR, text.to_sym] }
 
       when (text = @ss.scan(/</))
-         action { [:COMPARE, text.to_sym] }
+         action { [:COMPARATOR, text.to_sym] }
 
       when (text = @ss.scan(/=/))
          action { [:EQ, text] }
 
       when (text = @ss.scan(/\+/))
-         action { [:OP, text.to_sym] }
+         action { [:PLUS, text.to_sym] }
 
       when (text = @ss.scan(/\-/))
-         action { [:OP, text.to_sym] }
+         action { [:MINUS, text.to_sym] }
 
       when (text = @ss.scan(/\*/))
-         action { [:OP, text.to_sym] }
+         action { [:TIMES, text.to_sym] }
 
       when (text = @ss.scan(/\//))
-         action { [:OP, text.to_sym] }
+         action { [:DIV, text.to_sym] }
 
       when (text = @ss.scan(/\(/))
          action { [:LPAREN, text] }

@@ -11,18 +11,18 @@ rule
   \. { [:PERIOD, text] }
   => { [:HASHROCKET, text] }
 
-  == { [:COMPARE, text.to_sym] }
-  != { [:COMPARE, text.to_sym] }
-  >= { [:COMPARE, text.to_sym] }
-  > { [:COMPARE, text.to_sym] }
-  <= { [:COMPARE, text.to_sym] }
-  < { [:COMPARE, text.to_sym] }
+  == { [:COMPARATOR, text.to_sym] }
+  != { [:COMPARATOR, text.to_sym] }
+  >= { [:COMPARATOR, text.to_sym] }
+  > { [:COMPARATOR, text.to_sym] }
+  <= { [:COMPARATOR, text.to_sym] }
+  < { [:COMPARATOR, text.to_sym] }
 
   = { [:EQ, text] }
-  \+ { [:OP, text.to_sym] }
-  \- { [:OP, text.to_sym] }
-  \* { [:OP, text.to_sym] }
-  \/ { [:OP, text.to_sym] }
+  \+ { [:PLUS, text.to_sym] }
+  \- { [:MINUS, text.to_sym] }
+  \* { [:TIMES, text.to_sym] }
+  \/ { [:DIV, text.to_sym] }
 
   \( { [:LPAREN, text] }
   \) { [:RPAREN, text] }

@@ -17,22 +17,22 @@ describe Exceptional::Scanner do
   it "scans comparisons" do
     str = "< <= > >= == !="
     expect(subject.tokenize(str)).to eq([
-      [:COMPARE, :<],
-      [:COMPARE, :<=],
-      [:COMPARE, :>],
-      [:COMPARE, :>=],
-      [:COMPARE, :==],
-      [:COMPARE, :!=],
+      [:COMPARATOR, :<],
+      [:COMPARATOR, :<=],
+      [:COMPARATOR, :>],
+      [:COMPARATOR, :>=],
+      [:COMPARATOR, :==],
+      [:COMPARATOR, :!=],
     ])
   end
 
   it "scans operators" do
     str = "+ - * /"
     expect(subject.tokenize(str)).to eq([
-      [:OP, :+],
-      [:OP, :-],
-      [:OP, :*],
-      [:OP, :/],
+      [:PLUS, :+],
+      [:MINUS, :-],
+      [:TIMES, :*],
+      [:DIV, :/],
     ])
   end
 
