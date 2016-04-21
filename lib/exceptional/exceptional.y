@@ -26,7 +26,8 @@ rule
   ;
 
   Statement
-  : AdditionStatement
+  : CallStatement
+  | AdditionStatement
   ;
 
   AdditionStatement
@@ -41,6 +42,20 @@ rule
   | MultiplicativeStatement DIV PrimaryStatement { result = Ast::BinopNode.new(op: :'/', left: val[0], right: val[2]) }
   ;
 
+  CallStatement
+  : Identifier LPAREN ArgumentList RPAREN { result = Ast::CallNode.new(expression: val[0], param_list: val[2]) }
+  ;
+
+  Receiver
+  : Identifier
+  ;
+
+  ArgumentList
+  :           { result = [] }
+  | Value     { result = [val[0]] }
+  | Value COMMA ArgumentList { result = [val[0], *val[2]] }
+  ;
+
   PrimaryStatement
   : Value
   ;
@@ -48,7 +63,12 @@ rule
   Value
   : String
   | Number
-  | Identifier
+  | PropertyAccess
+  ;
+
+  PropertyAccess
+  : Identifier
+  | Identifier PERIOD Identifier
   ;
 
   Identifier
@@ -61,16 +81,3 @@ rule
   Number
   : NUMBER { result = Ast::NumberNode.new(value: val[0]) }
   ;
-
-  # Assignment
-  # : IDENTIFIER EQ Expression {
-  #   result = Ast::AssignNode.new(
-  #     binding: Ast::IdentifierNode.new(val[0]),
-  #     value: val[1],
-  #   )
-  # }
-  # ;
-
-  # Expression
-  # : STRING { result = Ast::StringNode.new(value: val[0]) }
-  # ;

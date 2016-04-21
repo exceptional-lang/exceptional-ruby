@@ -10,38 +10,46 @@ module Exceptional
 ##### State transition tables begin ###
 
 racc_action_table = [
-    12,    11,    13,    12,    11,    13,    12,    11,    13,    12,
-    11,    13,    12,    11,    13,    12,    11,    13,    18,    19,
-    18,    19,    16,    17,    18,    19,    14,    20 ]
+    22,    14,    13,    15,    14,    13,    15,    23,    14,    13,
+    15,    14,    13,    15,    14,    13,    15,    14,    13,    15,
+    14,    13,    15,    14,    13,    15,    20,    21,    18,    19,
+    20,    21,    20,    21,    24,    23,    16,    33,    34,    13 ]
 
 racc_action_check = [
-     0,     0,     0,     2,     2,     2,    16,    16,    16,    17,
-    17,    17,    18,    18,    18,    19,    19,    19,    21,    21,
-    22,    22,     4,     4,     5,     5,     1,    14 ]
+     8,     2,     2,     2,    34,    34,    34,     8,    18,    18,
+    18,    19,    19,    19,    20,    20,    20,    21,    21,    21,
+    22,    22,    22,     0,     0,     0,    27,    27,     5,     5,
+     6,     6,    25,    25,    16,    26,     1,    30,    31,    23 ]
 
 racc_action_pointer = [
-   -15,    26,   -12,   nil,    -3,    -3,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,    27,   nil,    -9,    -6,    -3,     0,
-   nil,    -9,    -7,   nil,   nil ]
+     8,    36,   -14,   nil,   nil,     3,     3,   nil,    -6,   nil,
+   nil,   nil,   nil,   nil,   nil,   nil,    34,   nil,    -7,    -4,
+    -1,     2,     5,    23,   nil,     5,    22,    -1,   nil,   nil,
+    30,    26,   nil,   nil,   -11,   nil ]
 
 racc_action_default = [
-   -18,   -18,    -1,    -2,    -4,    -5,    -8,   -11,   -12,   -13,
-   -14,   -15,   -16,   -17,   -18,    -3,   -18,   -18,   -18,   -18,
-    25,    -6,    -7,    -9,   -10 ]
+   -26,   -26,    -1,    -2,    -4,    -5,    -6,    -9,   -21,   -17,
+   -18,   -19,   -20,   -23,   -24,   -25,   -26,    -3,   -26,   -26,
+   -26,   -26,   -14,   -26,    36,    -7,   -21,    -8,   -10,   -11,
+   -26,   -15,   -22,   -12,   -14,   -16 ]
 
 racc_goto_table = [
-     3,     1,    15,    21,    22,    23,    24,     2 ]
+     8,    30,     8,    31,     3,     1,    17,    28,    29,    25,
+    27,     2,   nil,    35,   nil,    31,   nil,   nil,   nil,   nil,
+   nil,   nil,   nil,    32 ]
 
 racc_goto_check = [
-     3,     1,     3,     5,     5,     6,     6,     2 ]
+     8,     9,     8,    11,     3,     1,     3,     7,     7,     6,
+     6,     2,   nil,     9,   nil,    11,   nil,   nil,   nil,   nil,
+   nil,   nil,   nil,     8 ]
 
 racc_goto_pointer = [
-   nil,     1,     7,     0,   nil,   -13,   -13,   nil,   nil,   nil,
-   nil ]
+   nil,     5,    11,     4,   nil,   nil,    -9,   -13,     0,   -21,
+   nil,   -19,   nil,   nil,   nil ]
 
 racc_goto_default = [
-   nil,   nil,   nil,   nil,     4,     5,     6,     7,     8,     9,
-    10 ]
+   nil,   nil,   nil,   nil,     4,     5,     6,     7,    26,   nil,
+   nil,     9,    10,    11,    12 ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
@@ -49,23 +57,31 @@ racc_reduce_table = [
   1, 32, :_reduce_2,
   2, 32, :_reduce_3,
   1, 33, :_reduce_none,
-  1, 34, :_reduce_none,
-  3, 34, :_reduce_6,
-  3, 34, :_reduce_7,
+  1, 33, :_reduce_none,
   1, 35, :_reduce_none,
-  3, 35, :_reduce_9,
-  3, 35, :_reduce_10,
+  3, 35, :_reduce_7,
+  3, 35, :_reduce_8,
   1, 36, :_reduce_none,
+  3, 36, :_reduce_10,
+  3, 36, :_reduce_11,
+  4, 34, :_reduce_12,
+  1, 40, :_reduce_none,
+  0, 39, :_reduce_14,
+  1, 39, :_reduce_15,
+  3, 39, :_reduce_16,
   1, 37, :_reduce_none,
-  1, 37, :_reduce_none,
-  1, 37, :_reduce_none,
-  1, 40, :_reduce_15,
-  1, 38, :_reduce_16,
-  1, 39, :_reduce_17 ]
+  1, 41, :_reduce_none,
+  1, 41, :_reduce_none,
+  1, 41, :_reduce_none,
+  1, 44, :_reduce_none,
+  3, 44, :_reduce_none,
+  1, 38, :_reduce_23,
+  1, 42, :_reduce_24,
+  1, 43, :_reduce_25 ]
 
-racc_reduce_n = 18
+racc_reduce_n = 26
 
-racc_shift_n = 25
+racc_shift_n = 36
 
 racc_token_table = {
   false => 0,
@@ -154,13 +170,17 @@ Racc_token_to_s_table = [
   "Program",
   "StatementList",
   "Statement",
+  "CallStatement",
   "AdditionStatement",
   "MultiplicativeStatement",
   "PrimaryStatement",
+  "Identifier",
+  "ArgumentList",
+  "Receiver",
   "Value",
   "String",
   "Number",
-  "Identifier" ]
+  "PropertyAccess" ]
 
 Racc_debug_parser = false
 
@@ -193,60 +213,96 @@ module_eval(<<'.,.,', 'exceptional.y', 24)
 
 # reduce 5 omitted
 
-module_eval(<<'.,.,', 'exceptional.y', 33)
-  def _reduce_6(val, _values, result)
+# reduce 6 omitted
+
+module_eval(<<'.,.,', 'exceptional.y', 34)
+  def _reduce_7(val, _values, result)
      result = Ast::BinopNode.new(op: :+, left: val[0], right: val[2]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 34)
-  def _reduce_7(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 35)
+  def _reduce_8(val, _values, result)
      result = Ast::BinopNode.new(op: :-, left: val[0], right: val[2]) 
     result
   end
 .,.,
 
-# reduce 8 omitted
+# reduce 9 omitted
 
-module_eval(<<'.,.,', 'exceptional.y', 39)
-  def _reduce_9(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 40)
+  def _reduce_10(val, _values, result)
      result = Ast::BinopNode.new(op: :*, left: val[0], right: val[2]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 40)
-  def _reduce_10(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 41)
+  def _reduce_11(val, _values, result)
      result = Ast::BinopNode.new(op: :'/', left: val[0], right: val[2]) 
     result
   end
 .,.,
 
-# reduce 11 omitted
-
-# reduce 12 omitted
+module_eval(<<'.,.,', 'exceptional.y', 45)
+  def _reduce_12(val, _values, result)
+     result = Ast::CallNode.new(expression: val[0], param_list: val[2]) 
+    result
+  end
+.,.,
 
 # reduce 13 omitted
 
-# reduce 14 omitted
+module_eval(<<'.,.,', 'exceptional.y', 53)
+  def _reduce_14(val, _values, result)
+     result = [] 
+    result
+  end
+.,.,
 
 module_eval(<<'.,.,', 'exceptional.y', 54)
   def _reduce_15(val, _values, result)
+     result = [val[0]] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'exceptional.y', 55)
+  def _reduce_16(val, _values, result)
+     result = [val[0], *val[2]] 
+    result
+  end
+.,.,
+
+# reduce 17 omitted
+
+# reduce 18 omitted
+
+# reduce 19 omitted
+
+# reduce 20 omitted
+
+# reduce 21 omitted
+
+# reduce 22 omitted
+
+module_eval(<<'.,.,', 'exceptional.y', 74)
+  def _reduce_23(val, _values, result)
      result = Ast::IdentifierNode.new(name: val[0]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 57)
-  def _reduce_16(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 77)
+  def _reduce_24(val, _values, result)
      result = Ast::StringNode.new(value: val[0]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 61)
-  def _reduce_17(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 81)
+  def _reduce_25(val, _values, result)
      result = Ast::NumberNode.new(value: val[0]) 
     result
   end
