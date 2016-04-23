@@ -36,17 +36,17 @@ rule
   ;
 
   LocalAssignmentStatement
-  : LET NonlocalAssignmentStatement { result = LocalAssignNode.new(binding_name: val[1].binding_name, value: val[1].value) }
+  : LET NonlocalAssignmentStatement { result = Ast::LocalAssignNode.new(binding_name: val[1].binding_name, value: val[1].value) }
   ;
 
   NonlocalAssignmentStatement
   : AdditionStatement
-  | Identifier EQ AdditionStatement { result = Ast::AssignNode.new(binding_name: val[0], value: val[2]) }
-  | Identifier EQ FunctionStatement { result = Ast::AssignNode.new(binding_name: val[0], value: val[2]) }
+  | FunctionStatement
+  | Identifier EQ NonlocalAssignmentStatement { result = Ast::AssignNode.new(binding_name: val[0], value: val[2]) }
   ;
 
   FunctionStatement
-  : DEF LPAREN FunctionArgumentList RPAREN Block { result = Ast::FunctionNode.new(param_list: val[2]) }
+  : DEF LPAREN FunctionArgumentList RPAREN Block { result = Ast::FunctionNode.new(param_list: val[2], block_node: val[4]) }
   ;
 
   Block

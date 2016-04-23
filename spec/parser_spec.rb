@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe Exceptional::Parser do
+  include TokensHelper
   include Exceptional::Ast
 
   it "parses statements with operators" do
     tokens = [
-      [:NUMBER, 5],
-      [:TIMES, :*],
-      [:NUMBER, 2],
-      [:PLUS, :+],
-      [:NUMBER, 4],
-      [false, false],
+      t_number(5),
+      t_times,
+      t_number(2),
+      t_plus,
+      t_number(4)
     ]
     expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
@@ -125,6 +125,43 @@ describe Exceptional::Parser do
           AssignNode.new(
             binding_name: IdentifierNode.new(name: "toto"),
             value: NumberNode.new(value: 1),
+          )
+        ]
+      )
+    )
+  end
+
+  it "parses function definition" do
+    tokens = [
+      t_def,
+      t_lparen,
+      t_identifier("x"),
+      t_comma,
+      t_identifier("y"),
+      t_rparen,
+      t_do,
+      t_identifier("x"),
+      t_plus,
+      t_identifier("y"),
+      t_end,
+    ]
+    expect(described_class.parse(tokens)).to eq(
+      BlockNode.new(
+        expressions: [
+          FunctionNode.new(
+            param_list: [
+              IdentifierNode.new(name: "x"),
+              IdentifierNode.new(name: "y"),
+            ],
+            block_node: BlockNode.new(
+              expressions: [
+                BinopNode.new(
+                  op: :+,
+                  left: IdentifierNode.new(name: "x"),
+                  right: IdentifierNode.new(name: "y"),
+                )
+              ]
+            )
           )
         ]
       )
