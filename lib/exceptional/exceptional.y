@@ -1,6 +1,6 @@
 class Exceptional::GeneratedParser
 
-token DEF DO END RAISE
+token LET DEF DO END RAISE
 token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET
 token COMMA PERIOD HASHROCKET
 token STRING IDENTIFIER NUMBER
@@ -21,25 +21,53 @@ rule
   ;
 
   StatementList
-  : Statement { result = [val[0]] }
+  : Statement               { result = [val[0]] }
   | StatementList Statement { result = [*val[0], val[1]] }
   ;
 
   Statement
   : CallStatement
-  | AdditionStatement
+  | AssignmentStatement
+  ;
+
+  AssignmentStatement
+  : LocalAssignmentStatement
+  | NonlocalAssignmentStatement
+  ;
+
+  LocalAssignmentStatement
+  : LET NonlocalAssignmentStatement { result = LocalAssignNode.new(binding_name: val[1].binding_name, value: val[1].value) }
+  ;
+
+  NonlocalAssignmentStatement
+  : AdditionStatement
+  | Identifier EQ AdditionStatement { result = Ast::AssignNode.new(binding_name: val[0], value: val[2]) }
+  | Identifier EQ FunctionStatement { result = Ast::AssignNode.new(binding_name: val[0], value: val[2]) }
+  ;
+
+  FunctionStatement
+  : DEF LPAREN FunctionArgumentList RPAREN Block { result = Ast::FunctionNode.new(param_list: val[2]) }
+  ;
+
+  Block
+  : DO Program END { result = val[1] }
+
+  FunctionArgumentList
+  :                               { result = [] }
+  | Identifier                    { result = [val[0]] }
+  | Identifier COMMA ArgumentList { result = [val[0], *val[2]] }
   ;
 
   AdditionStatement
   : MultiplicativeStatement
-  | AdditionStatement PLUS MultiplicativeStatement { result = Ast::BinopNode.new(op: :+, left: val[0], right: val[2]) }
+  | AdditionStatement PLUS MultiplicativeStatement  { result = Ast::BinopNode.new(op: :+, left: val[0], right: val[2]) }
   | AdditionStatement MINUS MultiplicativeStatement { result = Ast::BinopNode.new(op: :-, left: val[0], right: val[2]) }
   ;
 
   MultiplicativeStatement
   : PrimaryStatement
-  | MultiplicativeStatement TIMES PrimaryStatement { result = Ast::BinopNode.new(op: :*, left: val[0], right: val[2]) }
-  | MultiplicativeStatement DIV PrimaryStatement { result = Ast::BinopNode.new(op: :'/', left: val[0], right: val[2]) }
+  | MultiplicativeStatement TIMES PrimaryStatement  { result = Ast::BinopNode.new(op: :*, left: val[0], right: val[2]) }
+  | MultiplicativeStatement DIV PrimaryStatement    { result = Ast::BinopNode.new(op: :'/', left: val[0], right: val[2]) }
   ;
 
   CallStatement
@@ -51,13 +79,14 @@ rule
   ;
 
   ArgumentList
-  :           { result = [] }
-  | Value     { result = [val[0]] }
-  | Value COMMA ArgumentList { result = [val[0], *val[2]] }
+  :                                      { result = [] }
+  | AdditionStatement                    { result = [val[0]] }
+  | AdditionStatement COMMA ArgumentList { result = [val[0], *val[2]] }
   ;
 
   PrimaryStatement
   : Value
+  | LPAREN Statement RPAREN { result = val[1] }
   ;
 
   Value

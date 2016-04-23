@@ -123,6 +123,9 @@ class Exceptional::Scanner < Racc::Parser
       when (text = @ss.scan(/\]/))
          action { [:RBRACKET, text] }
 
+      when (text = @ss.scan(/let/))
+         action { [:LET, text] }
+
       when (text = @ss.scan(/def/))
          action { [:DEF, text] }
 

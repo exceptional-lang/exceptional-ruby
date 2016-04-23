@@ -31,6 +31,7 @@ rule
   \[ { [:LBRACKET, text] }
   \] { [:RBRACKET, text] }
 
+  let { [:LET, text] }
   def { [:DEF, text] }
   do { [:DO, text] }
   end { [:END, text] }
