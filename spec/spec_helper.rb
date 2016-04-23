@@ -4,6 +4,10 @@ require 'pry'
 
 
 module TokensHelper
+  def t_let
+    [:LET, "let"]
+  end
+
   def t_def
     [:DEF, "def"]
   end
@@ -22,6 +26,10 @@ module TokensHelper
 
   def t_number(number)
     [:NUMBER, number]
+  end
+
+  def t_string(string)
+    [:STRING, string]
   end
 
   def t_lparen
@@ -46,6 +54,10 @@ module TokensHelper
 
   def t_div
     [:DIV, :'/']
+  end
+
+  def t_eq
+    [:EQ, "="]
   end
 
   def t_comma

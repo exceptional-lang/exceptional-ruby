@@ -31,14 +31,13 @@ describe Exceptional::Parser do
 
   it "parses statements where math order is important" do
     tokens = [
-      [:LPAREN, "("],
-      [:NUMBER, 5],
-      [:PLUS, :+],
-      [:NUMBER, 2],
-      [:RPAREN, ")"],
-      [:TIMES, :*],
-      [:NUMBER, 4],
-      [false, false],
+      t_lparen,
+      t_number(5),
+      t_plus,
+      t_number(2),
+      t_rparen,
+      t_times,
+      t_number(4),
     ]
     expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
@@ -59,10 +58,9 @@ describe Exceptional::Parser do
 
   it "parses calls to functions without args" do
     tokens = [
-      [:IDENTIFIER, "bob"],
-      [:LPAREN, "("],
-      [:RPAREN, ")"],
-      [false, false],
+      t_identifier("bob"),
+      t_lparen,
+      t_rparen,
     ]
     expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
@@ -78,13 +76,12 @@ describe Exceptional::Parser do
 
   it "parses calls to functions with complex args" do
     tokens = [
-      [:IDENTIFIER, "bob"],
-      [:LPAREN, "("],
-      [:STRING, "toto"],
-      [:PLUS, :+],
-      [:STRING, "titi"],
-      [:RPAREN, ")"],
-      [false, false],
+      t_identifier("bob"),
+      t_lparen,
+      t_string("toto"),
+      t_plus,
+      t_string("titi"),
+      t_rparen,
     ]
     expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
@@ -106,14 +103,13 @@ describe Exceptional::Parser do
 
   it "parses assignments and local assignments" do
     tokens = [
-      [:LET, "let"],
-      [:IDENTIFIER, "bob"],
-      [:EQ, "="],
-      [:NUMBER, 1],
-      [:IDENTIFIER, "toto"],
-      [:EQ, "="],
-      [:NUMBER, 1],
-      [false, false]
+      t_let,
+      t_identifier("bob"),
+      t_eq,
+      t_number(1),
+      t_identifier("toto"),
+      t_eq,
+      t_number(1),
     ]
     expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
