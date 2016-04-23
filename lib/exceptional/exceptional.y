@@ -1,6 +1,6 @@
 class Exceptional::GeneratedParser
 
-token LET DEF DO END RAISE
+token LET DEF DO END RAISE RESCUE
 token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET
 token COMMA PERIOD HASHROCKET
 token STRING IDENTIFIER NUMBER
@@ -21,13 +21,23 @@ rule
   ;
 
   StatementList
-  : Statement               { result = [val[0]] }
+  :                         { result = [] }
+  | Statement               { result = [val[0]] }
   | StatementList Statement { result = [*val[0], val[1]] }
   ;
 
   Statement
   : CallStatement
   | AssignmentStatement
+  | RescueStatement
+  ;
+
+  RescueStatement
+  : RESCUE RescuePattern Block { result = RescueNode.new(pattern: val[1], block_node: val[2]) }
+  ;
+
+  RescuePattern
+  : Hash
   ;
 
   AssignmentStatement
@@ -106,8 +116,8 @@ rule
   ;
 
   HashPairList
-  :
-  | HashPair { result = [val[0]] }
+  :                             { result = [] }
+  | HashPair                    { result = [val[0]] }
   | HashPair COMMA HashPairList { result = [val[0], *val[2]] }
   ;
 

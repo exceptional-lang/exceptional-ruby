@@ -20,6 +20,10 @@ module TokensHelper
     [:END, "end"]
   end
 
+  def t_rescue
+    [:RESCUE, "rescue"]
+  end
+
   def t_identifier(name)
     [:IDENTIFIER, name]
   end

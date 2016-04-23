@@ -43,6 +43,11 @@ describe Exceptional::Parser do
       t_hashrocket,
       t_identifier("hash"),
       t_rbrace,
+      t_comma,
+      t_string("z"),
+      t_hashrocket,
+      t_lbrace,
+      t_rbrace,
       t_rbrace,
     ]
     expect(described_class.parse(tokens)).to eq(
@@ -64,6 +69,10 @@ describe Exceptional::Parser do
                     ],
                   ]
                 )
+              ],
+              [
+                StringNode.new(value: "z"),
+                HashNode.new(pair_list: [])
               ],
             ]
           ),
@@ -203,6 +212,26 @@ describe Exceptional::Parser do
             )
           )
         ]
+      )
+    )
+  end
+
+  it "parses rescue blocks" do
+    tokens = [
+      t_rescue,
+      t_lbrace,
+      t_rbrace,
+      t_do,
+      t_end,
+    ]
+    expect(described_class.parse(tokens)).to eq(
+      BlockNode.new(
+        expressions: [
+          RescueNode.new(
+            pattern: HashNode.new(pair_list: []),
+            block_node: BlockNode.new(expressions: []),
+          )
+        ],
       )
     )
   end

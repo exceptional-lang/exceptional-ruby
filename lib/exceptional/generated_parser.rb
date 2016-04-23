@@ -10,130 +10,134 @@ module Exceptional
 ##### State transition tables begin ###
 
 racc_action_table = [
-     8,    12,    54,     8,    12,    16,    33,    21,    16,    56,
-    21,    31,    35,    36,    23,    22,    24,    23,    22,    24,
-     8,    12,    22,     8,    12,    16,    25,    21,    16,    65,
-    21,    35,    36,    58,    23,    22,    24,    23,    22,    24,
-    12,    35,    36,    12,    16,    59,    21,    16,    57,    21,
-    29,    30,    32,    23,    22,    24,    23,    22,    24,    33,
-    60,    29,    30,    16,    31,    21,    16,    34,    21,    16,
-    68,    21,    23,    22,    24,    23,    22,    24,    23,    22,
-    24,    16,    42,    21,    16,    22,    21,    16,    53,    21,
-    23,    22,    24,    23,    22,    24,    23,    22,    24,    16,
-    33,    21,    55,   nil,    21,   nil,   nil,    21,    23,    22,
-    24,    23,    22,    24,    23,    22,    24,    21,   nil,   nil,
-   nil,   nil,   nil,   nil,    23,    22,    24 ]
+    10,    14,    37,    23,    37,     7,    18,    35,    23,    64,
+    25,    24,    26,    10,    14,    25,    24,    26,     7,    18,
+    60,    23,    33,    34,    39,    40,    10,    14,    25,    24,
+    26,     7,    18,    61,    23,    39,    40,    33,    34,    10,
+    14,    25,    24,    26,     7,    18,    14,    23,    39,    40,
+    62,    18,    14,    23,    25,    24,    26,    18,    36,    23,
+    25,    24,    26,    23,    65,    37,    25,    24,    26,    18,
+    35,    23,    18,    66,    23,    18,    67,    23,    25,    24,
+    26,    25,    24,    26,    25,    24,    26,    18,    46,    23,
+    18,    48,    23,    18,    38,    23,    25,    24,    26,    25,
+    24,    26,    25,    24,    26,    18,    24,    23,    70,    24,
+    23,    27,    48,    23,    25,    24,    26,    25,    24,    26,
+    25,    24,    26,    59 ]
 
 racc_action_check = [
-    16,    16,    39,     0,     0,    16,    28,    16,     0,    41,
-     0,    28,    13,    13,    16,    16,    16,     0,     0,     0,
-     2,     2,    33,    65,    65,     2,     1,     2,    65,    59,
-    65,    43,    43,    47,     2,     2,     2,    65,    65,    65,
-    31,    44,    44,     8,    31,    49,    31,     8,    46,     8,
-     9,     9,    11,    31,    31,    31,     8,     8,     8,    11,
-    50,    46,    46,    36,    11,    36,    29,    12,    29,    30,
-    67,    30,    36,    36,    36,    29,    29,    29,    30,    30,
-    30,    32,    25,    32,    35,    34,    35,    57,    37,    57,
-    32,    32,    32,    35,    35,    35,    57,    57,    57,    60,
-    38,    60,    40,   nil,    55,   nil,   nil,    56,    60,    60,
-    60,    55,    55,    55,    56,    56,    56,    21,   nil,   nil,
-   nil,   nil,   nil,   nil,    21,    21,    21 ]
+     0,     0,    32,    62,    42,     0,     0,    32,     0,    52,
+    62,    62,    62,    48,    48,     0,     0,     0,    48,    48,
+    43,    48,    52,    52,    49,    49,     2,     2,    48,    48,
+    48,     2,     2,    44,     2,    50,    50,    11,    11,    18,
+    18,     2,     2,     2,    18,    18,    35,    18,    15,    15,
+    45,    35,    10,    35,    18,    18,    18,    10,    13,    10,
+    35,    35,    35,     7,    53,    13,    10,    10,    10,    67,
+    13,    67,    33,    55,    33,    34,    56,    34,    67,    67,
+    67,    33,    33,    33,    34,    34,    34,    36,    27,    36,
+    39,    29,    39,    40,    14,    40,    36,    36,    36,    39,
+    39,    39,    40,    40,    40,    64,    37,    64,    63,    38,
+    23,     1,    66,    61,    64,    64,    64,    23,    23,    23,
+    61,    61,    61,    41 ]
 
 racc_action_pointer = [
-     1,    26,    18,   nil,   nil,   nil,   nil,   nil,    40,    24,
-   nil,    45,    60,   -16,   nil,   nil,    -2,   nil,   nil,   nil,
-   nil,   108,   nil,   nil,   nil,    82,   nil,   nil,    -8,    59,
-    62,    37,    74,     5,    68,    77,    56,    80,    86,    -8,
-    89,    -6,   nil,     3,    13,   nil,    35,    25,   nil,    37,
-    47,   nil,   nil,   nil,   nil,    95,    98,    80,   nil,    25,
-    92,   nil,   nil,   nil,   nil,    21,   nil,    65,   nil ]
+    -2,   111,    24,   nil,   nil,   nil,   nil,    53,   nil,   nil,
+    49,    10,   nil,    50,    86,    19,   nil,   nil,    37,   nil,
+   nil,   nil,   nil,   100,   nil,   nil,   nil,    88,   nil,    87,
+   nil,   nil,   -13,    64,    67,    43,    79,    88,    91,    82,
+    85,   114,   -11,     9,    19,    34,   nil,   nil,    11,    -5,
+     6,   nil,    -5,    55,   nil,    64,    62,   nil,   nil,   nil,
+   nil,   103,    -7,   103,    97,   nil,   108,    61,   nil,   nil,
+   nil,   nil,   nil,   nil ]
 
 racc_action_default = [
-   -44,   -44,    -1,    -2,    -4,    -5,    -6,    -7,   -44,    -9,
-   -10,   -34,   -44,   -17,   -20,   -28,   -44,   -30,   -31,   -32,
-   -33,   -37,   -41,   -42,   -43,   -44,    -3,    -8,   -34,   -44,
-   -44,   -44,   -25,   -44,   -14,   -44,   -44,   -44,   -34,   -44,
-   -38,   -44,    69,   -18,   -19,   -11,   -26,   -44,   -35,   -44,
-   -15,   -21,   -22,   -29,   -36,   -37,   -44,   -25,   -23,   -44,
-   -25,   -39,   -40,   -27,   -12,   -44,   -16,   -44,   -13 ]
+    -2,   -48,    -1,    -3,    -5,    -6,    -7,   -48,   -10,   -11,
+   -48,   -13,   -14,   -38,   -48,   -21,   -24,   -32,   -48,   -34,
+   -35,   -36,   -37,   -41,   -45,   -46,   -47,   -48,    -4,   -48,
+    -9,   -12,   -38,   -48,   -48,   -48,   -29,   -48,   -18,   -48,
+   -48,   -48,   -38,   -48,   -42,   -48,    74,    -8,    -2,   -22,
+   -23,   -15,   -30,   -48,   -39,   -48,   -19,   -25,   -26,   -33,
+   -40,   -41,   -48,   -48,   -29,   -27,   -48,   -29,   -43,   -44,
+   -17,   -31,   -16,   -20 ]
 
 racc_goto_table = [
-    11,     1,    11,    41,    47,    39,    26,    27,    28,    43,
-    44,    51,    52,    64,    49,    46,    11,   nil,   nil,   nil,
-    37,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,    63,
-    45,    28,    66,    48,    50,   nil,   nil,    41,    62,    61,
-    46,   nil,   nil,    46,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,   nil,    11,    67 ]
+     1,    13,    45,    13,    43,    31,    47,    28,    49,    50,
+    55,    32,    57,    58,    30,    29,    53,   nil,   nil,    13,
+   nil,   nil,    52,    41,   nil,   nil,   nil,   nil,   nil,   nil,
+    51,   nil,   nil,   nil,   nil,   nil,    32,   nil,    54,    56,
+    45,    69,    68,    72,    71,   nil,   nil,    73,    63,    13,
+    52,   nil,   nil,    52 ]
 
 racc_goto_check = [
-    10,     1,    10,    17,    13,    22,     3,     7,    10,    14,
-    14,    15,    15,    12,    11,     8,    10,   nil,   nil,   nil,
-     3,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,    13,
-     7,    10,    13,    10,    10,   nil,   nil,    17,    17,    22,
-     8,   nil,   nil,     8,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,   nil,    10,     1 ]
+     1,    14,    20,    14,    24,    11,     8,     3,    17,    17,
+    15,    14,    18,    18,     9,     7,    16,   nil,   nil,    14,
+   nil,   nil,    12,     3,   nil,   nil,   nil,   nil,   nil,   nil,
+    11,   nil,   nil,   nil,   nil,   nil,    14,   nil,    14,    14,
+    20,    20,    24,     8,    16,   nil,   nil,    16,     1,    14,
+    12,   nil,   nil,    12 ]
 
 racc_goto_pointer = [
-   nil,     1,   nil,     4,   nil,   nil,   nil,    -1,   -17,   nil,
-     0,   -20,   -46,   -28,   -20,   -24,   nil,   -18,   nil,   nil,
-   nil,   nil,   -16,   nil ]
+   nil,     0,   nil,     5,   nil,   nil,   nil,     8,   -23,     7,
+   nil,    -5,   -14,   nil,     1,   -28,   -20,   -25,   -27,   nil,
+   -21,   nil,   nil,   nil,   -19,   nil ]
 
 racc_goto_default = [
-   nil,   nil,     2,     3,     4,     5,     6,     7,     9,    10,
-    38,   nil,   nil,   nil,    13,    14,   nil,    15,    17,    18,
-    19,    20,   nil,    40 ]
+   nil,   nil,     2,     3,     4,     5,     6,   nil,   nil,    22,
+     8,     9,    11,    12,    42,   nil,   nil,    15,    16,   nil,
+    17,    19,    20,    21,   nil,    44 ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  1, 32, :_reduce_1,
-  1, 33, :_reduce_2,
-  2, 33, :_reduce_3,
-  1, 34, :_reduce_none,
-  1, 34, :_reduce_none,
-  1, 36, :_reduce_none,
-  1, 36, :_reduce_none,
-  2, 37, :_reduce_8,
-  1, 38, :_reduce_none,
-  1, 38, :_reduce_none,
-  3, 38, :_reduce_11,
-  5, 40, :_reduce_12,
-  3, 43, :_reduce_13,
-  0, 42, :_reduce_14,
-  1, 42, :_reduce_15,
-  3, 42, :_reduce_16,
+  1, 33, :_reduce_1,
+  0, 34, :_reduce_2,
+  1, 34, :_reduce_3,
+  2, 34, :_reduce_4,
+  1, 35, :_reduce_none,
+  1, 35, :_reduce_none,
+  1, 35, :_reduce_none,
+  3, 38, :_reduce_8,
   1, 39, :_reduce_none,
-  3, 39, :_reduce_18,
-  3, 39, :_reduce_19,
-  1, 45, :_reduce_none,
-  3, 45, :_reduce_21,
-  3, 45, :_reduce_22,
-  4, 35, :_reduce_23,
-  1, 47, :_reduce_none,
-  0, 44, :_reduce_25,
-  1, 44, :_reduce_26,
-  3, 44, :_reduce_27,
-  1, 46, :_reduce_none,
-  3, 46, :_reduce_29,
-  1, 48, :_reduce_none,
-  1, 48, :_reduce_none,
-  1, 48, :_reduce_none,
-  1, 48, :_reduce_none,
+  1, 37, :_reduce_none,
+  1, 37, :_reduce_none,
+  2, 42, :_reduce_12,
+  1, 43, :_reduce_none,
+  1, 43, :_reduce_none,
+  3, 43, :_reduce_15,
+  5, 45, :_reduce_16,
+  3, 40, :_reduce_17,
+  0, 47, :_reduce_18,
+  1, 47, :_reduce_19,
+  3, 47, :_reduce_20,
+  1, 44, :_reduce_none,
+  3, 44, :_reduce_22,
+  3, 44, :_reduce_23,
+  1, 49, :_reduce_none,
+  3, 49, :_reduce_25,
+  3, 49, :_reduce_26,
+  4, 36, :_reduce_27,
   1, 51, :_reduce_none,
-  3, 51, :_reduce_none,
-  3, 52, :_reduce_36,
-  0, 53, :_reduce_none,
-  1, 53, :_reduce_38,
-  3, 53, :_reduce_39,
-  3, 54, :_reduce_40,
-  1, 41, :_reduce_41,
-  1, 49, :_reduce_42,
-  1, 50, :_reduce_43 ]
+  0, 48, :_reduce_29,
+  1, 48, :_reduce_30,
+  3, 48, :_reduce_31,
+  1, 50, :_reduce_none,
+  3, 50, :_reduce_33,
+  1, 52, :_reduce_none,
+  1, 52, :_reduce_none,
+  1, 52, :_reduce_none,
+  1, 52, :_reduce_none,
+  1, 55, :_reduce_none,
+  3, 55, :_reduce_none,
+  3, 41, :_reduce_40,
+  0, 56, :_reduce_41,
+  1, 56, :_reduce_42,
+  3, 56, :_reduce_43,
+  3, 57, :_reduce_44,
+  1, 46, :_reduce_45,
+  1, 53, :_reduce_46,
+  1, 54, :_reduce_47 ]
 
-racc_reduce_n = 44
+racc_reduce_n = 48
 
-racc_shift_n = 69
+racc_shift_n = 74
 
 racc_token_table = {
   false => 0,
@@ -143,32 +147,33 @@ racc_token_table = {
   :DO => 4,
   :END => 5,
   :RAISE => 6,
-  :LPAREN => 7,
-  :RPAREN => 8,
-  :LBRACE => 9,
-  :RBRACE => 10,
-  :LBRACKET => 11,
-  :RBRACKET => 12,
-  :COMMA => 13,
-  :PERIOD => 14,
-  :HASHROCKET => 15,
-  :STRING => 16,
-  :IDENTIFIER => 17,
-  :NUMBER => 18,
-  :EQ => 19,
-  :NEQEQ => 20,
-  :GT => 21,
-  :GTE => 22,
-  :LT => 23,
-  :LTE => 24,
-  :COMPARATOR => 25,
-  :PLUS => 26,
-  :MINUS => 27,
-  :TIMES => 28,
-  :DIV => 29,
-  :COMMENT => 30 }
+  :RESCUE => 7,
+  :LPAREN => 8,
+  :RPAREN => 9,
+  :LBRACE => 10,
+  :RBRACE => 11,
+  :LBRACKET => 12,
+  :RBRACKET => 13,
+  :COMMA => 14,
+  :PERIOD => 15,
+  :HASHROCKET => 16,
+  :STRING => 17,
+  :IDENTIFIER => 18,
+  :NUMBER => 19,
+  :EQ => 20,
+  :NEQEQ => 21,
+  :GT => 22,
+  :GTE => 23,
+  :LT => 24,
+  :LTE => 25,
+  :COMPARATOR => 26,
+  :PLUS => 27,
+  :MINUS => 28,
+  :TIMES => 29,
+  :DIV => 30,
+  :COMMENT => 31 }
 
-racc_nt_base = 31
+racc_nt_base = 32
 
 racc_use_result_var = true
 
@@ -196,6 +201,7 @@ Racc_token_to_s_table = [
   "DO",
   "END",
   "RAISE",
+  "RESCUE",
   "LPAREN",
   "RPAREN",
   "LBRACE",
@@ -226,13 +232,16 @@ Racc_token_to_s_table = [
   "Statement",
   "CallStatement",
   "AssignmentStatement",
+  "RescueStatement",
+  "RescuePattern",
+  "Block",
+  "Hash",
   "LocalAssignmentStatement",
   "NonlocalAssignmentStatement",
   "AdditionStatement",
   "FunctionStatement",
   "Identifier",
   "FunctionArgumentList",
-  "Block",
   "ArgumentList",
   "MultiplicativeStatement",
   "PrimaryStatement",
@@ -241,7 +250,6 @@ Racc_token_to_s_table = [
   "String",
   "Number",
   "PropertyAccess",
-  "Hash",
   "HashPairList",
   "HashPair" ]
 
@@ -260,19 +268,24 @@ module_eval(<<'.,.,', 'exceptional.y', 19)
 
 module_eval(<<'.,.,', 'exceptional.y', 23)
   def _reduce_2(val, _values, result)
-     result = [val[0]] 
+     result = [] 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'exceptional.y', 24)
   def _reduce_3(val, _values, result)
-     result = [*val[0], val[1]] 
+     result = [val[0]] 
     result
   end
 .,.,
 
-# reduce 4 omitted
+module_eval(<<'.,.,', 'exceptional.y', 25)
+  def _reduce_4(val, _values, result)
+     result = [*val[0], val[1]] 
+    result
+  end
+.,.,
 
 # reduce 5 omitted
 
@@ -280,9 +293,9 @@ module_eval(<<'.,.,', 'exceptional.y', 24)
 
 # reduce 7 omitted
 
-module_eval(<<'.,.,', 'exceptional.y', 38)
+module_eval(<<'.,.,', 'exceptional.y', 35)
   def _reduce_8(val, _values, result)
-     result = Ast::LocalAssignNode.new(binding_name: val[1].binding_name, value: val[1].value) 
+     result = RescueNode.new(pattern: val[1], block_node: val[2]) 
     result
   end
 .,.,
@@ -291,177 +304,195 @@ module_eval(<<'.,.,', 'exceptional.y', 38)
 
 # reduce 10 omitted
 
-module_eval(<<'.,.,', 'exceptional.y', 44)
-  def _reduce_11(val, _values, result)
+# reduce 11 omitted
+
+module_eval(<<'.,.,', 'exceptional.y', 48)
+  def _reduce_12(val, _values, result)
+     result = Ast::LocalAssignNode.new(binding_name: val[1].binding_name, value: val[1].value) 
+    result
+  end
+.,.,
+
+# reduce 13 omitted
+
+# reduce 14 omitted
+
+module_eval(<<'.,.,', 'exceptional.y', 54)
+  def _reduce_15(val, _values, result)
      result = Ast::AssignNode.new(binding_name: val[0], value: val[2]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 48)
-  def _reduce_12(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 58)
+  def _reduce_16(val, _values, result)
      result = Ast::FunctionNode.new(param_list: val[2], block_node: val[4]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 52)
-  def _reduce_13(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 62)
+  def _reduce_17(val, _values, result)
      result = val[1] 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 55)
-  def _reduce_14(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 65)
+  def _reduce_18(val, _values, result)
      result = [] 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 56)
-  def _reduce_15(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 66)
+  def _reduce_19(val, _values, result)
      result = [val[0]] 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 57)
-  def _reduce_16(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 67)
+  def _reduce_20(val, _values, result)
      result = [val[0], *val[2]] 
     result
   end
 .,.,
 
-# reduce 17 omitted
+# reduce 21 omitted
 
-module_eval(<<'.,.,', 'exceptional.y', 62)
-  def _reduce_18(val, _values, result)
-     result = Ast::BinopNode.new(op: :+, left: val[0], right: val[2]) 
-    result
-  end
-.,.,
-
-module_eval(<<'.,.,', 'exceptional.y', 63)
-  def _reduce_19(val, _values, result)
-     result = Ast::BinopNode.new(op: :-, left: val[0], right: val[2]) 
-    result
-  end
-.,.,
-
-# reduce 20 omitted
-
-module_eval(<<'.,.,', 'exceptional.y', 68)
-  def _reduce_21(val, _values, result)
-     result = Ast::BinopNode.new(op: :*, left: val[0], right: val[2]) 
-    result
-  end
-.,.,
-
-module_eval(<<'.,.,', 'exceptional.y', 69)
+module_eval(<<'.,.,', 'exceptional.y', 72)
   def _reduce_22(val, _values, result)
-     result = Ast::BinopNode.new(op: :'/', left: val[0], right: val[2]) 
+     result = Ast::BinopNode.new(op: :+, left: val[0], right: val[2]) 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'exceptional.y', 73)
   def _reduce_23(val, _values, result)
-     result = Ast::CallNode.new(expression: val[0], param_list: val[2]) 
+     result = Ast::BinopNode.new(op: :-, left: val[0], right: val[2]) 
     result
   end
 .,.,
 
 # reduce 24 omitted
 
-module_eval(<<'.,.,', 'exceptional.y', 81)
+module_eval(<<'.,.,', 'exceptional.y', 78)
   def _reduce_25(val, _values, result)
-     result = [] 
+     result = Ast::BinopNode.new(op: :*, left: val[0], right: val[2]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 82)
+module_eval(<<'.,.,', 'exceptional.y', 79)
   def _reduce_26(val, _values, result)
-     result = [val[0]] 
+     result = Ast::BinopNode.new(op: :'/', left: val[0], right: val[2]) 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'exceptional.y', 83)
   def _reduce_27(val, _values, result)
-     result = [val[0], *val[2]] 
+     result = Ast::CallNode.new(expression: val[0], param_list: val[2]) 
     result
   end
 .,.,
 
 # reduce 28 omitted
 
-module_eval(<<'.,.,', 'exceptional.y', 88)
+module_eval(<<'.,.,', 'exceptional.y', 91)
   def _reduce_29(val, _values, result)
-     result = val[1] 
+     result = [] 
     result
   end
 .,.,
 
-# reduce 30 omitted
-
-# reduce 31 omitted
-
-# reduce 32 omitted
-
-# reduce 33 omitted
-
-# reduce 34 omitted
-
-# reduce 35 omitted
-
-module_eval(<<'.,.,', 'exceptional.y', 104)
-  def _reduce_36(val, _values, result)
-     result = Ast::HashNode.new(pair_list: val[1]) 
-    result
-  end
-.,.,
-
-# reduce 37 omitted
-
-module_eval(<<'.,.,', 'exceptional.y', 109)
-  def _reduce_38(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 92)
+  def _reduce_30(val, _values, result)
      result = [val[0]] 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 110)
-  def _reduce_39(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 93)
+  def _reduce_31(val, _values, result)
      result = [val[0], *val[2]] 
     result
   end
 .,.,
 
+# reduce 32 omitted
+
+module_eval(<<'.,.,', 'exceptional.y', 98)
+  def _reduce_33(val, _values, result)
+     result = val[1] 
+    result
+  end
+.,.,
+
+# reduce 34 omitted
+
+# reduce 35 omitted
+
+# reduce 36 omitted
+
+# reduce 37 omitted
+
+# reduce 38 omitted
+
+# reduce 39 omitted
+
 module_eval(<<'.,.,', 'exceptional.y', 114)
   def _reduce_40(val, _values, result)
-     result = [val[0], val[2]] 
+     result = Ast::HashNode.new(pair_list: val[1]) 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'exceptional.y', 118)
   def _reduce_41(val, _values, result)
+     result = [] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'exceptional.y', 119)
+  def _reduce_42(val, _values, result)
+     result = [val[0]] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'exceptional.y', 120)
+  def _reduce_43(val, _values, result)
+     result = [val[0], *val[2]] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'exceptional.y', 124)
+  def _reduce_44(val, _values, result)
+     result = [val[0], val[2]] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'exceptional.y', 128)
+  def _reduce_45(val, _values, result)
      result = Ast::IdentifierNode.new(name: val[0]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 121)
-  def _reduce_42(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 131)
+  def _reduce_46(val, _values, result)
      result = Ast::StringNode.new(value: val[0]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'exceptional.y', 125)
-  def _reduce_43(val, _values, result)
+module_eval(<<'.,.,', 'exceptional.y', 135)
+  def _reduce_47(val, _values, result)
      result = Ast::NumberNode.new(value: val[0]) 
     result
   end

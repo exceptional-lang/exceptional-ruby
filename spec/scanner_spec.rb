@@ -89,12 +89,13 @@ describe Exceptional::Scanner do
   end
 
   it "scans other keywords" do
-    str = "def do end raise"
+    str = "def do end raise rescue"
     expect(described_class.tokenize(str)).to eq([
       [:DEF, "def"],
       [:DO, "do"],
       [:END, "end"],
       [:RAISE, "raise"],
+      [:RESCUE, "rescue"],
     ])
   end
 end

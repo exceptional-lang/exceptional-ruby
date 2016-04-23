@@ -138,6 +138,9 @@ class Exceptional::Scanner < Racc::Parser
       when (text = @ss.scan(/raise/))
          action { [:RAISE, text] }
 
+      when (text = @ss.scan(/rescue/))
+         action { [:RESCUE, text] }
+
       when (text = @ss.scan(/[[:alpha:]_][\w]*/))
          action { [:IDENTIFIER, text] }
 

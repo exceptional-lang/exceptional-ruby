@@ -36,6 +36,7 @@ rule
   do { [:DO, text] }
   end { [:END, text] }
   raise { [:RAISE, text] }
+  rescue { [:RESCUE, text] }
 
   {IDENTIFIER} { [:IDENTIFIER, text] }
   {NUMBER} { [:NUMBER, text.to_i] }
