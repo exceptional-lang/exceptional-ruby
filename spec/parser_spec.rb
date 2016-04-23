@@ -29,6 +29,49 @@ describe Exceptional::Parser do
     )
   end
 
+  it "parses hashes" do
+    tokens = [
+      t_lbrace,
+      t_string("x"),
+      t_hashrocket,
+      t_string("toto"),
+      t_comma,
+      t_identifier("y"),
+      t_hashrocket,
+      t_lbrace,
+      t_string("nested"),
+      t_hashrocket,
+      t_identifier("hash"),
+      t_rbrace,
+      t_rbrace,
+    ]
+    expect(described_class.parse(tokens)).to eq(
+      BlockNode.new(
+        expressions: [
+          HashNode.new(
+            pair_list: [
+              [
+                StringNode.new(value: "x"),
+                StringNode.new(value: "toto"),
+              ],
+              [
+                IdentifierNode.new(name: "y"),
+                HashNode.new(
+                  pair_list: [
+                    [
+                      StringNode.new(value: "nested"),
+                      IdentifierNode.new(name: "hash"),
+                    ],
+                  ]
+                )
+              ],
+            ]
+          ),
+        ],
+      )
+    )
+  end
+
   it "parses statements where math order is important" do
     tokens = [
       t_lparen,

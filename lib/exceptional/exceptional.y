@@ -93,11 +93,26 @@ rule
   : String
   | Number
   | PropertyAccess
+  | Hash
   ;
 
   PropertyAccess
   : Identifier
   | Identifier PERIOD Identifier
+  ;
+
+  Hash
+  : LBRACE HashPairList RBRACE { result = Ast::HashNode.new(pair_list: val[1]) }
+  ;
+
+  HashPairList
+  :
+  | HashPair { result = [val[0]] }
+  | HashPair COMMA HashPairList { result = [val[0], *val[2]] }
+  ;
+
+  HashPair
+  : Value HASHROCKET Value { result = [val[0], val[2]] }
   ;
 
   Identifier
