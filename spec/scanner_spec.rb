@@ -7,7 +7,7 @@ describe Exceptional::Scanner do
       # Other comment
       toto
     STR
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:COMMENT, " Comment"],
       [:COMMENT, " Other comment"],
       [:IDENTIFIER, "toto"],
@@ -16,7 +16,7 @@ describe Exceptional::Scanner do
 
   it "scans comparisons" do
     str = "< <= > >= == !="
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:COMPARATOR, :<],
       [:COMPARATOR, :<=],
       [:COMPARATOR, :>],
@@ -28,7 +28,7 @@ describe Exceptional::Scanner do
 
   it "scans operators" do
     str = "+ - * /"
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:PLUS, :+],
       [:MINUS, :-],
       [:TIMES, :*],
@@ -38,7 +38,7 @@ describe Exceptional::Scanner do
 
   it "scans brackets" do
     str = "[] {} ()"
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:LBRACKET, "["],
       [:RBRACKET, "]"],
       [:LBRACE, "{"],
@@ -50,7 +50,7 @@ describe Exceptional::Scanner do
 
   it "scans strings" do
     str = "123 456 1029380129830912830"
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:NUMBER, 123],
       [:NUMBER, 456],
       [:NUMBER, 1029380129830912830],
@@ -59,14 +59,14 @@ describe Exceptional::Scanner do
 
   it "scans strings" do
     str = '"test titi toto"'
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:STRING, "test titi toto"],
     ])
   end
 
   it "scans identifiers" do
     str = "test\ntiti\ntoto"
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:IDENTIFIER, "test"],
       [:IDENTIFIER, "titi"],
       [:IDENTIFIER, "toto"],
@@ -75,14 +75,14 @@ describe Exceptional::Scanner do
 
   it "scans hashrockets" do
     str = "=>"
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:HASHROCKET, "=>"],
     ])
   end
 
   it "scans commas and periods" do
     str = ". ,"
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:PERIOD, "."],
       [:COMMA, ","],
     ])
@@ -90,7 +90,7 @@ describe Exceptional::Scanner do
 
   it "scans other keywords" do
     str = "def do end raise"
-    expect(subject.tokenize(str)).to eq([
+    expect(described_class.tokenize(str)).to eq([
       [:DEF, "def"],
       [:DO, "do"],
       [:END, "end"],

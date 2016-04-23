@@ -1,11 +1,15 @@
 module Exceptional
   class Parser < Exceptional::GeneratedParser
-    def initialize(tokens)
-      @tokens = tokens
+    class << self
+      def parse(tokens)
+        new(tokens).do_parse
+      end
     end
 
-    def parse
-      do_parse
+    protected
+
+    def initialize(tokens)
+      @tokens = tokens
     end
 
     def next_token

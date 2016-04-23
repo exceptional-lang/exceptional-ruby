@@ -12,7 +12,7 @@ describe Exceptional::Parser do
       [:NUMBER, 4],
       [false, false],
     ]
-    expect(described_class.new(tokens).parse).to eq(
+    expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
         expressions: [
           BinopNode.new(
@@ -40,7 +40,7 @@ describe Exceptional::Parser do
       [:NUMBER, 4],
       [false, false],
     ]
-    expect(described_class.new(tokens).parse).to eq(
+    expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
         expressions: [
           BinopNode.new(
@@ -64,7 +64,7 @@ describe Exceptional::Parser do
       [:RPAREN, ")"],
       [false, false],
     ]
-    expect(described_class.new(tokens).parse).to eq(
+    expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
         expressions: [
           CallNode.new(
@@ -86,7 +86,7 @@ describe Exceptional::Parser do
       [:RPAREN, ")"],
       [false, false],
     ]
-    expect(described_class.new(tokens).parse).to eq(
+    expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
         expressions: [
           CallNode.new(
@@ -115,7 +115,7 @@ describe Exceptional::Parser do
       [:NUMBER, 1],
       [false, false]
     ]
-    expect(described_class.new(tokens).parse).to eq(
+    expect(described_class.parse(tokens)).to eq(
       BlockNode.new(
         expressions: [
           LocalAssignNode.new(

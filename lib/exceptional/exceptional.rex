@@ -41,10 +41,11 @@ rule
   {NUMBER} { [:NUMBER, text.to_i] }
   {BLANK}
 inner
-  def tokenize(code)
-    scan_setup(code)
+  def self.tokenize(code)
+    instance = new
+    instance.scan_setup(code)
     tokens = []
-    while token = next_token
+    while token = instance.next_token
       tokens << token
     end
     tokens
