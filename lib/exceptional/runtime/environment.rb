@@ -14,6 +14,10 @@ module Exceptional
       def stack
         stackframes << Exceptional::Runtime::Stackframe.new
       end
+
+      def reset_frame(stackframe)
+        self.stackframes = stackframes.take(stackframes.index(stackframe) + 1)
+      end
     end
   end
 end

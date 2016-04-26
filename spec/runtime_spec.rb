@@ -434,20 +434,38 @@ describe Exceptional::Runtime do
   end
 
   describe RaiseNode do
-    context "with a handler on the current stackframe" do
-      let(:environment) do
-        Exceptional::Runtime::Environment.new(
-          lexical_scope: parent_scope,
-        )
-      end
-      let(:pattern) { Exceptional::Values::Pattern.new(pattern: double()) }
-      let(:block) { BlockNode.new(expressions: []) }
-      let(:ast) do
-        RaiseNode.new(
-          value: "a",
-        )
-      end
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(
+        lexical_scope: parent_scope,
+      )
+    end
+    let(:pattern) { Exceptional::Values::Pattern.new(pattern: double()) }
+    let(:block) { BlockNode.new(expressions: []) }
+    let(:ast) do
+      RaiseNode.new(
+        value: "a",
+      )
+    end
 
+    context "with a handler on the current stackframe" do
+      it "finds the handler, resets the stack, and resumes execution in the handler" do
+        environment.stackframe.setup_handler(
+          pattern: pattern,
+          block_node: block,
+          parent_scope: lexical_scope,
+        )
+
+        environment.stack
+
+        expect(pattern).to receive(:match?).with("a").and_return(true)
+        expect(block).to receive(:eval).with(environment)
+        expect {
+          ast.eval(environment)
+        }.to change { environment.stackframes.length }.from(2).to(1)
+      end
+    end
+
+    context "with a handler on a higher stackframe" do
       it "finds the handler, resets the stack, and resumes execution in the handler" do
         environment.stackframe.setup_handler(
           pattern: pattern,
@@ -459,16 +477,28 @@ describe Exceptional::Runtime do
         expect(block).to receive(:eval).with(environment)
         ast.eval(environment)
       end
-
-      pending "resets the stack"
-    end
-
-    context "with a handler on a higher stackframe" do
-      pending "finds the handler, resets the stack, and resumes execution in the handler"
     end
 
     context "without a handler" do
       pending "doesn't raise the exception"
+    end
+  end
+
+  describe HashNode do
+    let(:ast) do
+      HashNode.new(pair_list: [
+        [StringNode.new(value: "a"), StringNode.new(value: "b")]
+      ])
+    end
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
+    end
+
+    it "returns a HashMap value" do
+      value = ast.eval(environment)
+      expect(value).to eq(Exceptional::Values::HashMap.new(value: {
+        Exceptional::Values::CharString.new(value: "a") => Exceptional::Values::CharString.new(value: "b")
+      }))
     end
   end
 end

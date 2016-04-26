@@ -11,6 +11,7 @@ module Exceptional
             pattern: pattern,
             block_node: block_node,
             parent_scope: parent_scope,
+            stackframe: self,
           )
         )
       end

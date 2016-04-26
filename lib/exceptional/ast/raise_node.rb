@@ -8,6 +8,7 @@ module Exceptional
       def eval(environment)
         handler = find_handler(environment)
         return unless handler
+        environment.reset_frame(handler.stackframe)
         handler.call(environment, value)
       end
 

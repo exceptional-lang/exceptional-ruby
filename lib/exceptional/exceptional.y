@@ -81,11 +81,7 @@ rule
   ;
 
   CallStatement
-  : Identifier LPAREN ArgumentList RPAREN { result = Ast::CallNode.new(expression: val[0], param_list: val[2]) }
-  ;
-
-  Receiver
-  : Identifier
+  : PropertyAccess LPAREN ArgumentList RPAREN { result = Ast::CallNode.new(expression: val[0], param_list: val[2]) }
   ;
 
   ArgumentList
@@ -107,8 +103,14 @@ rule
   ;
 
   PropertyAccess
+  : Receiver
+  | Receiver PERIOD PropertyAccess
+  | Receiver LBRACKET PrimaryStatement RBRACKET
+  ;
+
+  Receiver
   : Identifier
-  | Identifier PERIOD Identifier
+  | PropertyAccess
   ;
 
   Hash
