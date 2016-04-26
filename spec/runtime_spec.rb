@@ -480,7 +480,17 @@ describe Exceptional::Runtime do
     end
 
     context "without a handler" do
-      pending "doesn't raise the exception"
+      it "doesn't raise the exception" do
+        environment.stackframe.setup_handler(
+          pattern: pattern,
+          block_node: block,
+          parent_scope: lexical_scope,
+        )
+
+        expect(pattern).to receive(:match?).with("a").and_return(false)
+        expect(block).not_to receive(:eval).with(environment)
+        ast.eval(environment)
+      end
     end
   end
 
