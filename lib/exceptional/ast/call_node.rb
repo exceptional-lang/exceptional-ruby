@@ -10,7 +10,6 @@ module Exceptional
         function = expression.eval(environment)
         # raise unless function.is_a?(Exceptional::Values::Lambda)
         arguments = param_list.map { |exp| exp.eval(environment) }
-        environment.stack
         function.call(environment, arguments)
       end
     end

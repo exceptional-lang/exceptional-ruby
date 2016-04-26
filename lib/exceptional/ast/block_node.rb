@@ -6,6 +6,7 @@ module Exceptional
       end
 
       def eval(environment)
+        environment.stack
         expressions.each do |expression|
           expression.eval(environment)
         end
