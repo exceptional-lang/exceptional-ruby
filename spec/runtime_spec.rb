@@ -376,7 +376,7 @@ describe Exceptional::Runtime do
     end
 
     it "creates a new stackframe" do
-      expect(environment).to receive(:stack)
+      expect(environment).to receive(:stack) { |scope| expect(scope.parent_scope).to eq(parent_scope) }
       ast.eval(environment)
     end
 
@@ -455,13 +455,9 @@ describe Exceptional::Runtime do
           parent_scope: lexical_scope,
         )
 
-        environment.stack
-
         expect(pattern).to receive(:match?).with("a").and_return(true)
         expect(block).to receive(:eval).with(environment)
-        expect {
-          ast.eval(environment)
-        }.to change { environment.stackframes.length }.from(2).to(1)
+        ast.eval(environment)
       end
     end
 
@@ -473,9 +469,18 @@ describe Exceptional::Runtime do
           parent_scope: lexical_scope,
         )
 
+        environment.stack(
+          Exceptional::Runtime::LexicalScope.new(
+            parent_scope: environment.lexical_scope,
+          )
+        )
+
         expect(pattern).to receive(:match?).with("a").and_return(true)
-        expect(block).to receive(:eval).with(environment)
-        ast.eval(environment)
+        expect {
+          ast.eval(environment)
+        }.to change { environment.stackframe }
+
+        expect(environment.stackframe.lexical_scope.parent_scope).to eq(lexical_scope)
       end
     end
 
@@ -535,8 +540,9 @@ describe Exceptional::Values do
     end
 
     it "creates a new lexical scope" do
-      function.call(environment, ["something"])
-      expect(environment.lexical_scope).not_to eq(parent_scope)
+      expect {
+        function.call(environment, ["something"])
+      }.to change { environment.lexical_scope }.from(parent_scope)
       expect(environment.lexical_scope.parent_scope).to eq(parent_scope)
     end
 

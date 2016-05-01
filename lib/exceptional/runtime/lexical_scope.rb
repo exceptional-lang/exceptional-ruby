@@ -13,12 +13,12 @@ module Exceptional
       end
 
       def local_set(binding_name, value)
-        bindings[binding_name] = LocalBinding.new(value: value)
+        bindings[binding_name] = ValueBinding.new(value: value)
       end
 
       def set(binding_name, value)
         local_binding = get_binding(binding_name)
-        # raise
+        # || raise
         local_binding.value = value
       end
 
@@ -41,7 +41,7 @@ module Exceptional
       end
     end
 
-    LocalBinding = Struct.new(:value) do
+    ValueBinding = Struct.new(:value) do
       def initialize(value:)
         self.value = value
       end

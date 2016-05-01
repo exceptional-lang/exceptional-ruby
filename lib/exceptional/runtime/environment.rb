@@ -3,16 +3,21 @@ module Exceptional
     Environment = Struct.new(:stackframes, :lexical_scope) do
       def initialize(lexical_scope:)
         self.stackframes = []
-        self.lexical_scope = lexical_scope
-        stack
+        stack(lexical_scope)
       end
 
       def stackframe
         stackframes.last
       end
 
-      def stack
-        stackframes << Exceptional::Runtime::Stackframe.new
+      def stack(lexical_scope)
+        stackframe = Exceptional::Runtime::Stackframe.new(lexical_scope: lexical_scope)
+        stackframes << stackframe
+        stackframe
+      end
+
+      def lexical_scope
+        stackframe.lexical_scope
       end
 
       def reset_frame(stackframe)
