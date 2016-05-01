@@ -551,4 +551,41 @@ describe Exceptional::Values do
       expect(environment.lexical_scope.get("x")).to eq("something")
     end
   end
+
+  describe Exceptional::Values::Pattern do
+    subject do
+      described_class.new(
+        pattern: Exceptional::Values::HashMap.new(
+          value: {
+            Exceptional::Values::CharString.new(value: "a") => Exceptional::Values::CharString.new(value: "b"),
+            Exceptional::Values::CharString.new(value: "c") => Exceptional::Values::CharString.new(value: "d"),
+          }
+        )
+      )
+    end
+
+    it "matches hashes of the same shape" do
+      expect(subject).to match(subject.dup)
+    end
+
+    it "matches superset hashes" do
+      superset = Exceptional::Values::HashMap.new(
+        value: subject.pattern.value.merge(
+          Exceptional::Values::CharString.new(value: "e") => Exceptional::Values::CharString.new(value: "f"),
+        )
+      )
+      expect(subject.match?(superset)).to eq(true)
+    end
+
+    it "doesn't match subset hashes" do
+      value = subject.pattern.value.dup
+      value.delete(
+        Exceptional::Values::CharString.new(value: "c")
+      )
+      subset = Exceptional::Values::HashMap.new(
+        value: value
+      )
+      expect(subject.match?(subset)).to eq(false)
+    end
+  end
 end
