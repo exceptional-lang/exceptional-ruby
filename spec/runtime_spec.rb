@@ -409,7 +409,8 @@ describe Exceptional::Runtime do
         lexical_scope: parent_scope,
       )
     end
-    let(:pattern) { double }
+    let(:pattern_value) { double }
+    let(:pattern) { double("Pattern", eval: pattern_value) }
     let(:block) { BlockNode.new(expressions: []) }
     let(:ast) do
       RescueNode.new(
@@ -425,7 +426,7 @@ describe Exceptional::Runtime do
       expect(handlers.length).to eq(1)
 
       handler = handlers.first
-      expect(handler.pattern).to eq(pattern)
+      expect(handler.pattern).to eq(Exceptional::Values::Pattern.new(pattern: pattern_value))
 
       block_value = handler.block
       expect(block_value.block_node).to eq(block)
@@ -539,11 +540,17 @@ describe Exceptional::Values do
       )
     end
 
-    it "creates a new lexical scope" do
+    it "changes the lexical scope" do
       expect {
         function.call(environment, ["something"])
       }.to change { environment.lexical_scope }.from(parent_scope)
       expect(environment.lexical_scope.parent_scope).to eq(parent_scope)
+    end
+
+    it "creates a new stackframe" do
+      expect {
+        function.call(environment, ["something"])
+      }.to change { environment.stackframes.length }.from(1).to(2)
     end
 
     it "creates local bindings for the parameters" do
@@ -586,6 +593,40 @@ describe Exceptional::Values do
         value: value
       )
       expect(subject.match?(subset)).to eq(false)
+    end
+  end
+end
+
+describe Exceptional::Runtime::LexicalScope do
+  let(:subject) do
+    described_class.new(parent_scope: described_class::Null)
+  end
+
+  before do
+    subject.local_set("x", 1)
+  end
+
+  describe "#bindings" do
+    it "returns the list of all bindings" do
+      expect(subject.bindings).to eq({"x" => Exceptional::Runtime::ValueBinding.new(value: 1)})
+    end
+
+    context "with overridden bindings" do
+      let(:subject) do
+        described_class.new(parent_scope: super())
+      end
+
+      before do
+        subject.local_set("x", 2)
+        subject.local_set("y", 3)
+      end
+
+      it "returns the list of current bindings" do
+        expect(subject.bindings).to eq({
+          "x" => Exceptional::Runtime::ValueBinding.new(value: 2),
+          "y" => Exceptional::Runtime::ValueBinding.new(value: 3),
+        })
+      end
     end
   end
 end

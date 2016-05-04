@@ -15,6 +15,7 @@ module Exceptional
       end
 
       def call(environment, exception)
+        environment.stack(block.lexical_scope)
         block.call(environment)
       end
     end

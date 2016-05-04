@@ -9,7 +9,6 @@ module Exceptional
       end
 
       def call(environment)
-        environment.stack(lexical_scope)
         block_node.eval(environment)
       end
     end

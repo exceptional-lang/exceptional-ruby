@@ -30,14 +30,19 @@ rule
   : CallStatement
   | AssignmentStatement
   | RescueStatement
+  | RaiseStatement
+  ;
+
+  RaiseStatement
+  : RAISE LPAREN Hash RPAREN { result = Ast::RaiseNode.new(value: val[2]) }
   ;
 
   RescueStatement
-  : RESCUE RescuePattern Block { result = RescueNode.new(pattern: val[1], block_node: val[2]) }
+  : RESCUE RescuePattern Block { result = Ast::RescueNode.new(pattern: val[1], block_node: val[2]) }
   ;
 
   RescuePattern
-  : Hash
+  : LPAREN Hash RPAREN { result = val[1] }
   ;
 
   AssignmentStatement
@@ -56,7 +61,7 @@ rule
   ;
 
   FunctionStatement
-  : DEF LPAREN FunctionArgumentList RPAREN Block { result = Ast::FunctionNode.new(param_list: val[2], block_node: val[4]) }
+  : DEF LPAREN FunctionArgumentList RPAREN Block { result = Ast::FunctionNode.new(param_list: Ast::ParamListNode.new(binding_names: val[2]), block_node: val[4]) }
   ;
 
   Block

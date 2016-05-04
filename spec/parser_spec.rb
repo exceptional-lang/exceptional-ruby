@@ -1,4 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
+
+include Exceptional::Ast
 
 describe Exceptional::Parser do
   include TokensHelper
@@ -197,10 +199,12 @@ describe Exceptional::Parser do
       BlockNode.new(
         expressions: [
           FunctionNode.new(
-            param_list: [
-              IdentifierNode.new(name: "x"),
-              IdentifierNode.new(name: "y"),
-            ],
+            param_list: ParamListNode.new(
+              binding_names: [
+                IdentifierNode.new(name: "x"),
+                IdentifierNode.new(name: "y"),
+              ],
+            ),
             block_node: BlockNode.new(
               expressions: [
                 BinopNode.new(
@@ -219,8 +223,10 @@ describe Exceptional::Parser do
   it "parses rescue blocks" do
     tokens = [
       t_rescue,
+      t_lparen,
       t_lbrace,
       t_rbrace,
+      t_rparen,
       t_do,
       t_end,
     ]
@@ -230,6 +236,25 @@ describe Exceptional::Parser do
           RescueNode.new(
             pattern: HashNode.new(pair_list: []),
             block_node: BlockNode.new(expressions: []),
+          )
+        ],
+      )
+    )
+  end
+
+  it "parses raise statements" do
+    tokens = [
+      t_raise,
+      t_lparen,
+      t_lbrace,
+      t_rbrace,
+      t_rparen,
+    ]
+    expect(described_class.parse(tokens)).to eq(
+      BlockNode.new(
+        expressions: [
+          RaiseNode.new(
+            value: HashNode.new(pair_list: []),
           )
         ],
       )

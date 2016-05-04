@@ -10,6 +10,7 @@ module Exceptional
       end
 
       def call(environment, arguments)
+        environment.stack(block.lexical_scope)
         param_list.zip(arguments).each do |binding_name, value|
           environment.lexical_scope.local_set(binding_name, value)
         end
