@@ -15,9 +15,10 @@ module Exceptional
       private
 
       def find_handler(environment)
+        raised_value = value.eval(environment)
         environment.stackframes.reverse.each do |frame|
           frame.exception_handlers.each do |handler|
-            next unless handler.match?(value)
+            next unless handler.match?(raised_value)
             return handler
           end
         end

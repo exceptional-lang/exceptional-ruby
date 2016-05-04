@@ -444,7 +444,7 @@ describe Exceptional::Runtime do
     let(:block) { BlockNode.new(expressions: []) }
     let(:ast) do
       RaiseNode.new(
-        value: "a",
+        value: StringNode.new(value: "a"),
       )
     end
 
@@ -456,7 +456,9 @@ describe Exceptional::Runtime do
           parent_scope: lexical_scope,
         )
 
-        expect(pattern).to receive(:match?).with("a").and_return(true)
+        expect(pattern).to receive(:match?).with(
+          Exceptional::Values::CharString.new(value: "a")
+        ).and_return(true)
         expect(block).to receive(:eval).with(environment)
         ast.eval(environment)
       end
@@ -476,7 +478,9 @@ describe Exceptional::Runtime do
           )
         )
 
-        expect(pattern).to receive(:match?).with("a").and_return(true)
+        expect(pattern).to receive(:match?).with(
+          Exceptional::Values::CharString.new(value: "a")
+        ).and_return(true)
         expect {
           ast.eval(environment)
         }.to change { environment.stackframe }
@@ -493,7 +497,9 @@ describe Exceptional::Runtime do
           parent_scope: lexical_scope,
         )
 
-        expect(pattern).to receive(:match?).with("a").and_return(false)
+        expect(pattern).to receive(:match?).with(
+          Exceptional::Values::CharString.new(value: "a")
+        ).and_return(false)
         expect(block).not_to receive(:eval).with(environment)
         ast.eval(environment)
       end
@@ -534,7 +540,7 @@ describe Exceptional::Values do
     end
     let(:function) do
       Exceptional::Values::Proc.new(
-        param_list: ["x"],
+        param_list: [IdentifierNode.new(name: "x")],
         block_node: BlockNode.new(expressions: []),
         parent_scope: environment.lexical_scope,
       )
