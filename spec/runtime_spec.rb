@@ -403,18 +403,74 @@ describe Exceptional::Runtime do
     end
   end
 
+  describe PatternNode do
+    let(:environment) do
+      Exceptional::Runtime::Environment.new(
+        lexical_scope: parent_scope,
+      )
+    end
+    let(:ast) {
+      PatternNode.new(
+        value: HashNode.new(
+          pair_list: [
+            [
+              IdentifierNode.new(name: "x"),
+              HashNode.new(
+                pair_list: [
+                  [
+                    IdentifierNode.new(name: "y"),
+                    NumberNode.new(value: 1),
+                  ],
+                ],
+              ),
+            ],
+          ],
+        )
+      )
+    }
+
+    it "returns a pattern to be matched" do
+      expect(ast.eval(environment)).to eq(
+        Exceptional::Values::Pattern.new(
+          pattern: [
+            [
+              Exceptional::Values::Pattern::Variable.new(name: "x"),
+              Exceptional::Values::Pattern.new(
+                pattern: [
+                  [
+                    Exceptional::Values::Pattern::Variable.new(name: "y"),
+                    Exceptional::Values::Pattern::Literal.new(
+                      value: Exceptional::Values::Number.new(value: 1),
+                    )
+                  ],
+                ],
+              ),
+            ],
+          ]
+        )
+      )
+    end
+  end
+
   describe RescueNode do
     let(:environment) do
       Exceptional::Runtime::Environment.new(
         lexical_scope: parent_scope,
       )
     end
-    let(:pattern_value) { double }
-    let(:pattern) { double("Pattern", eval: pattern_value) }
+    let(:pattern_node) {
+      PatternNode.new(
+        value: HashNode.new(
+          pair_list: [
+            [IdentifierNode.new(name: "x"), NumberNode.new(value: 1)],
+          ],
+        )
+      )
+    }
     let(:block) { BlockNode.new(expressions: []) }
     let(:ast) do
       RescueNode.new(
-        pattern: pattern,
+        pattern: pattern_node,
         block_node: block,
       )
     end
@@ -426,7 +482,7 @@ describe Exceptional::Runtime do
       expect(handlers.length).to eq(1)
 
       handler = handlers.first
-      expect(handler.pattern).to eq(Exceptional::Values::Pattern.new(pattern: pattern_value))
+      expect(handler.pattern).to be_a(Exceptional::Values::Pattern)
 
       block_value = handler.block
       expect(block_value.block_node).to eq(block)

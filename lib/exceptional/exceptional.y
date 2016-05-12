@@ -42,7 +42,7 @@ rule
   ;
 
   RescuePattern
-  : LPAREN Hash RPAREN { result = val[1] }
+  : LPAREN Hash RPAREN { result = Ast::PatternNode.new(value: val[1]) }
   ;
 
   AssignmentStatement
