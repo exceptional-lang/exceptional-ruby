@@ -234,7 +234,9 @@ describe Exceptional::Parser do
       BlockNode.new(
         expressions: [
           RescueNode.new(
-            pattern: HashNode.new(pair_list: []),
+            pattern: PatternNode.new(
+              value: HashNode.new(pair_list: []),
+            ),
             block_node: BlockNode.new(expressions: []),
           )
         ],

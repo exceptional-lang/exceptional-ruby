@@ -10,16 +10,23 @@ module Exceptional
   require "exceptional/scanner"
 
   class << self
-    def eval(input)
-      tokens = Exceptional::Scanner.tokenize(input)
-      ast = Exceptional::Parser.parse(tokens)
-      env = Exceptional::Runtime::Environment.new(
+    def new_environment
+      Exceptional::Runtime::Environment.new(
         lexical_scope: Exceptional::Runtime::LexicalScope.new(
           parent_scope: Exceptional::Runtime::LexicalScope::Null,
         )
       )
+    end
 
-      [ast,env]
+    def parse(code)
+      tokens = Exceptional::Scanner.tokenize(code)
+      Exceptional::Parser.parse(tokens)
+    end
+
+    def eval(input)
+      env = new_environment
+      parse(input).eval(env)
+      env
     end
   end
 end

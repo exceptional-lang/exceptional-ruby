@@ -6,7 +6,7 @@ module Exceptional
       end
     end
 
-    protected
+    private
 
     def initialize(tokens)
       @tokens = tokens

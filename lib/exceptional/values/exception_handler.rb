@@ -10,8 +10,8 @@ module Exceptional
         self.stackframe = stackframe
       end
 
-      def match?(value)
-        pattern.match?(value)
+      def match(value)
+        pattern.match(value)
       end
 
       def call(environment, exception)

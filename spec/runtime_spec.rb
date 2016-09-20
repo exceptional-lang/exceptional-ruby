@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 include Exceptional::Ast
+include ValuesHelper
 
 describe Exceptional::Runtime do
   let(:string) { StringNode.new(value: "world") }
@@ -71,17 +72,17 @@ describe Exceptional::Runtime do
     end
 
     before do
-      world = Exceptional::Values::CharString.new(value: "world")
+      world = v_char_string("world")
       parent_scope.local_set("hello", world)
     end
 
     it "modifies the existing binding" do
       ast.eval(environment)
       expect(lexical_scope.get("hello")).to eq(
-        Exceptional::Values::CharString.new(value: "test")
+        v_char_string("test")
       )
       expect(parent_scope.get("hello")).to eq(
-        Exceptional::Values::CharString.new(value: "test")
+        v_char_string("test")
       )
     end
 
@@ -108,7 +109,7 @@ describe Exceptional::Runtime do
     it "modifies the environment" do
       ast.eval(environment)
       expect(lexical_scope.get("hello")).to eq(
-        Exceptional::Values::CharString.new(value: "world")
+        v_char_string("world")
       )
     end
   end
@@ -137,7 +138,7 @@ describe Exceptional::Runtime do
               right: NumberNode.new(value: right),
             )
 
-            expect(node.eval(environment)).to eq(Exceptional::Values::Number.new(value: result))
+            expect(node.eval(environment)).to eq(v_number(result))
           end
         end
       end
@@ -188,7 +189,7 @@ describe Exceptional::Runtime do
               right: NumberNode.new(value: right),
             )
 
-            expect(node.eval(environment)).to eq(Exceptional::Values::Boolean.new(value: result))
+            expect(node.eval(environment)).to eq(v_bool(result))
           end
         end
       end
@@ -235,7 +236,7 @@ describe Exceptional::Runtime do
               right: StringNode.new(value: right),
             )
 
-            expect(node.eval(environment)).to eq(Exceptional::Values::Boolean.new(value: result))
+            expect(node.eval(environment)).to eq(v_bool(result))
           end
         end
       end
@@ -262,7 +263,7 @@ describe Exceptional::Runtime do
               right: BooleanNode.new(value: right),
             )
 
-            expect(node.eval(environment)).to eq(Exceptional::Values::Boolean.new(value: result))
+            expect(node.eval(environment)).to eq(v_bool(result))
           end
         end
       end
@@ -281,7 +282,7 @@ describe Exceptional::Runtime do
 
     it "returns a Boolean value" do
       value = ast.eval(environment)
-      expect(value).to eq(Exceptional::Values::Boolean.new(value: true))
+      expect(value).to eq(v_bool(true))
     end
   end
 
@@ -295,7 +296,7 @@ describe Exceptional::Runtime do
 
     it "returns a Number value" do
       value = ast.eval(environment)
-      expect(value).to eq(Exceptional::Values::Number.new(value: 3))
+      expect(value).to eq(v_number(3))
     end
   end
 
@@ -431,23 +432,17 @@ describe Exceptional::Runtime do
 
     it "returns a pattern to be matched" do
       expect(ast.eval(environment)).to eq(
-        Exceptional::Values::Pattern.new(
-          pattern: [
-            [
-              Exceptional::Values::Pattern::Variable.new(name: "x"),
-              Exceptional::Values::Pattern.new(
-                pattern: [
-                  [
-                    Exceptional::Values::Pattern::Variable.new(name: "y"),
-                    Exceptional::Values::Pattern::Literal.new(
-                      value: Exceptional::Values::Number.new(value: 1),
-                    )
-                  ],
-                ],
-              ),
-            ],
-          ]
-        )
+        v_pat([
+          [
+            v_pat_variable("x"),
+            v_pat([
+              [
+                v_pat_variable("y"),
+                v_pat_literal(v_number(1)),
+              ],
+            ]),
+          ],
+        ])
       )
     end
   end
@@ -482,7 +477,14 @@ describe Exceptional::Runtime do
       expect(handlers.length).to eq(1)
 
       handler = handlers.first
-      expect(handler.pattern).to be_a(Exceptional::Values::Pattern)
+      expect(handler.pattern).to eq(
+        v_pat([
+          [
+            v_pat_variable("x"),
+            v_pat_literal(v_number(1)),
+          ],
+        ])
+      )
 
       block_value = handler.block
       expect(block_value.block_node).to eq(block)
@@ -496,11 +498,15 @@ describe Exceptional::Runtime do
         lexical_scope: parent_scope,
       )
     end
-    let(:pattern) { Exceptional::Values::Pattern.new(pattern: double()) }
+    let(:pattern) { v_pat(double()) }
     let(:block) { BlockNode.new(expressions: []) }
     let(:ast) do
       RaiseNode.new(
-        value: StringNode.new(value: "a"),
+        value: HashNode.new(
+          pair_list: [
+            [StringNode.new(value: "a"), NumberNode.new(value: 3)],
+          ]
+        )
       )
     end
 
@@ -512,16 +518,16 @@ describe Exceptional::Runtime do
           parent_scope: lexical_scope,
         )
 
-        expect(pattern).to receive(:match?).with(
-          Exceptional::Values::CharString.new(value: "a")
-        ).and_return(true)
+        expect(pattern).to receive(:match).with(
+          v_hashmap(v_char_string("a") => v_number(3))
+        ).and_return({})
         expect(block).to receive(:eval).with(environment)
         ast.eval(environment)
       end
     end
 
     context "with a handler on a higher stackframe" do
-      it "finds the handler, resets the stack, and resumes execution in the handler" do
+      before do
         environment.stackframe.setup_handler(
           pattern: pattern,
           block_node: block,
@@ -533,15 +539,29 @@ describe Exceptional::Runtime do
             parent_scope: environment.lexical_scope,
           )
         )
+      end
 
-        expect(pattern).to receive(:match?).with(
-          Exceptional::Values::CharString.new(value: "a")
-        ).and_return(true)
+      it "finds the handler, resets the stack, and resumes execution in the handler" do
+        expect(pattern).to receive(:match).with(
+          v_hashmap(v_char_string("a") => v_number(3))
+        ).and_return({})
         expect {
           ast.eval(environment)
         }.to change { environment.stackframe }
 
         expect(environment.stackframe.lexical_scope.parent_scope).to eq(lexical_scope)
+      end
+
+      it "sets the bindings" do
+        expect(pattern).to receive(:match).with(
+          v_hashmap(v_char_string("a") => v_number(3))
+        ).and_return({ "a" => v_number(3) })
+
+        ast.eval(environment)
+
+        expect(
+          environment.stackframe.lexical_scope.get("a")
+        ).to eq(v_number(3))
       end
     end
 
@@ -553,8 +573,8 @@ describe Exceptional::Runtime do
           parent_scope: lexical_scope,
         )
 
-        expect(pattern).to receive(:match?).with(
-          Exceptional::Values::CharString.new(value: "a")
+        expect(pattern).to receive(:match).with(
+          v_hashmap(v_char_string("a") => v_number(3))
         ).and_return(false)
         expect(block).not_to receive(:eval).with(environment)
         ast.eval(environment)
@@ -574,9 +594,9 @@ describe Exceptional::Runtime do
 
     it "returns a HashMap value" do
       value = ast.eval(environment)
-      expect(value).to eq(Exceptional::Values::HashMap.new(value: {
-        Exceptional::Values::CharString.new(value: "a") => Exceptional::Values::CharString.new(value: "b")
-      }))
+      expect(value).to eq(v_hashmap(
+        v_char_string("a") => v_char_string("b")
+      ))
     end
   end
 end
@@ -618,43 +638,6 @@ describe Exceptional::Values do
     it "creates local bindings for the parameters" do
       function.call(environment, ["something"])
       expect(environment.lexical_scope.get("x")).to eq("something")
-    end
-  end
-
-  describe Exceptional::Values::Pattern do
-    subject do
-      described_class.new(
-        pattern: Exceptional::Values::HashMap.new(
-          value: {
-            Exceptional::Values::CharString.new(value: "a") => Exceptional::Values::CharString.new(value: "b"),
-            Exceptional::Values::CharString.new(value: "c") => Exceptional::Values::CharString.new(value: "d"),
-          }
-        )
-      )
-    end
-
-    it "matches hashes of the same shape" do
-      expect(subject).to match(subject.dup)
-    end
-
-    it "matches superset hashes" do
-      superset = Exceptional::Values::HashMap.new(
-        value: subject.pattern.value.merge(
-          Exceptional::Values::CharString.new(value: "e") => Exceptional::Values::CharString.new(value: "f"),
-        )
-      )
-      expect(subject.match?(superset)).to eq(true)
-    end
-
-    it "doesn't match subset hashes" do
-      value = subject.pattern.value.dup
-      value.delete(
-        Exceptional::Values::CharString.new(value: "c")
-      )
-      subset = Exceptional::Values::HashMap.new(
-        value: value
-      )
-      expect(subject.match?(subset)).to eq(false)
     end
   end
 end

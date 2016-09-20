@@ -6,9 +6,12 @@ module Exceptional
       end
 
       def eval(environment)
-        handler = find_handler(environment)
+        bindings, handler = find_handler(environment)
         return unless handler
         environment.reset_frame(handler.stackframe)
+        bindings.each do |binding_name, value|
+          environment.lexical_scope.local_set(binding_name, value)
+        end
         handler.call(environment, value)
       end
 
@@ -18,8 +21,8 @@ module Exceptional
         raised_value = value.eval(environment)
         environment.stackframes.reverse.each do |frame|
           frame.exception_handlers.each do |handler|
-            next unless handler.match?(raised_value)
-            return handler
+            next [] unless bindings = handler.match(raised_value)
+            return [bindings, handler]
           end
         end
         nil

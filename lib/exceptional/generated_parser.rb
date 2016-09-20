@@ -322,7 +322,7 @@ module_eval(<<'.,.,', 'exceptional.y', 40)
 
 module_eval(<<'.,.,', 'exceptional.y', 44)
   def _reduce_11(val, _values, result)
-     result = val[1] 
+     result = Ast::PatternNode.new(value: val[1]) 
     result
   end
 .,.,

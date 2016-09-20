@@ -84,3 +84,33 @@ module TokensHelper
     [:HASHROCKET, "=>"]
   end
 end
+
+module ValuesHelper
+  def v_char_string(str)
+    Exceptional::Values::CharString.new(value: str)
+  end
+
+  def v_number(num)
+    Exceptional::Values::Number.new(value: num)
+  end
+
+  def v_bool(bool)
+    Exceptional::Values::Boolean.new(value: bool)
+  end
+
+  def v_hashmap(hash)
+    Exceptional::Values::HashMap.new(value: hash)
+  end
+
+  def v_pat(pair_list)
+    Exceptional::Values::Pattern.new(pattern: pair_list)
+  end
+
+  def v_pat_literal(literal)
+    Exceptional::Values::Pattern::Literal.new(value: literal)
+  end
+
+  def v_pat_variable(variable)
+    Exceptional::Values::Pattern::Variable.new(name: variable)
+  end
+end

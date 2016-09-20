@@ -8,7 +8,7 @@ module Exceptional
 
       def eval(environment)
         environment.stackframe.setup_handler(
-          pattern: Exceptional::Values::Pattern.new(pattern: pattern.eval(environment)),
+          pattern: pattern.eval(environment),
           block_node: block_node,
           parent_scope: environment.lexical_scope,
         )

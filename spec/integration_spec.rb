@@ -1,19 +1,22 @@
 require "spec_helper"
 
+include ValuesHelper
 describe Exceptional do
   let(:code) {
     <<~SOURCE
       let a = ""
+      let b = ""
 
-      rescue({ "x" => 1 }) do
-        a = 1
+      rescue({ x => y }) do
+        a = x
+        b = y
       end
 
       let fn = def(x) do
         raise({ "x" => x })
       end
 
-      fn(1)
+      fn(3)
     SOURCE
   }
 
@@ -22,6 +25,7 @@ describe Exceptional do
 
   it "works" do
     ast.eval(env)
-    expect(env.lexical_scope.get("a")).to eq(Exceptional::Values::Number.new(value: 1))
+    expect(env.lexical_scope.get("a")).to eq(v_char_string("x"))
+    expect(env.lexical_scope.get("b")).to eq(v_number(3))
   end
 end
