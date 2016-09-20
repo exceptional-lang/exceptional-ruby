@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Guillaume Malette"]
   spec.email         = ["guillaume@jadedpixel.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Exceptional is an exception-based language}
+  spec.description   = %q{Exceptional is an exception-based language}
+  spec.homepage      = "https://github.com/exceptional-lang/exceptional"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
