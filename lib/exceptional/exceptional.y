@@ -129,7 +129,7 @@ rule
   ;
 
   HashPair
-  : Value HASHROCKET Value { result = [val[0], val[2]] }
+  : AdditionStatement HASHROCKET AdditionStatement { result = [val[0], val[2]] }
   ;
 
   Identifier

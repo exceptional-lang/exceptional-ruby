@@ -44,6 +44,12 @@ describe Exceptional::Parser do
       t_string("nested"),
       t_hashrocket,
       t_identifier("hash"),
+      t_comma,
+      t_string("expression"),
+      t_hashrocket,
+      t_identifier("left"),
+      t_plus,
+      t_number(4),
       t_rbrace,
       t_comma,
       t_string("z"),
@@ -69,6 +75,14 @@ describe Exceptional::Parser do
                       StringNode.new(value: "nested"),
                       IdentifierNode.new(name: "hash"),
                     ],
+                    [
+                      StringNode.new(value: "expression"),
+                      BinopNode.new(
+                        op: :+,
+                        left: IdentifierNode.new(name: "left"),
+                        right: NumberNode.new(value: 4),
+                      ),
+                    ]
                   ]
                 )
               ],
