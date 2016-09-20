@@ -4,7 +4,7 @@ include ValuesHelper
 describe Exceptional do
   context "simple case" do
     let(:code) {
-      <<~SOURCE
+      <<-SOURCE
       let a = ""
       let b = ""
 
@@ -33,7 +33,7 @@ describe Exceptional do
 
   context "fibonacci" do
     let(:code) {
-      <<~SOURCE
+      <<-SOURCE
         let fib = def(k) do
           rescue({ "m" => m, "k" => 0 }) do
             raise({ "result" => m })
