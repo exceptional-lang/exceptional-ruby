@@ -22,11 +22,5 @@ module Exceptional
       tokens = Exceptional::Scanner.tokenize(code)
       Exceptional::Parser.parse(tokens)
     end
-
-    def eval(input)
-      env = new_environment
-      parse(input).eval(env)
-      env
-    end
   end
 end
