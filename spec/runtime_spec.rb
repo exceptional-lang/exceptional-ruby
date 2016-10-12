@@ -70,9 +70,6 @@ describe Exceptional::Runtime do
         value: StringNode.new(value: "test")
       )
     end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: lexical_scope)
-    end
 
     before do
       world = v_char_string("world")
@@ -105,9 +102,6 @@ describe Exceptional::Runtime do
         value: string
       )
     end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
-    end
 
     it "modifies the environment" do
       ast.eval(environment)
@@ -118,10 +112,6 @@ describe Exceptional::Runtime do
   end
 
   describe BinopNode do
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
-    end
-
     {
       :+ => {
         [1, 1] => 2,
@@ -149,10 +139,6 @@ describe Exceptional::Runtime do
   end
 
   describe ComparisonNode do
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
-    end
-
     {
       :== => {
         [4, 4] => true,
@@ -279,9 +265,6 @@ describe Exceptional::Runtime do
     let(:ast) do
       BooleanNode.new(value: true)
     end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
-    end
 
     it "returns a Boolean value" do
       value = ast.eval(environment)
@@ -292,9 +275,6 @@ describe Exceptional::Runtime do
   describe NumberNode do
     let(:ast) do
       NumberNode.new(value: 3)
-    end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
     end
 
     it "returns a Number value" do
@@ -321,9 +301,6 @@ describe Exceptional::Runtime do
         block_node: block
       )
     end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
-    end
 
     it "creates a Proc that wraps the block and the lexical scope" do
       value = ast.eval(environment)
@@ -333,16 +310,13 @@ describe Exceptional::Runtime do
       block_value = value.block
       expect(block_value).to be_a(Exceptional::Values::Block)
       expect(block_value.block_node).to eq(block)
-      expect(block_value.lexical_scope.parent_scope).to eq(parent_scope)
+      expect(block_value.lexical_scope.parent_scope).to eq(lexical_scope)
     end
   end
 
   describe IdentifierNode do
     let(:ast) do
       IdentifierNode.new(name: "hello")
-    end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
     end
 
     before do
@@ -362,9 +336,6 @@ describe Exceptional::Runtime do
         param_list: call_param_list,
       )
     end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
-    end
     let(:parameter_names) { [] }
     let(:function) do
       Exceptional::Values::Proc.new(
@@ -380,7 +351,7 @@ describe Exceptional::Runtime do
     end
 
     it "creates a new stackframe" do
-      expect(environment).to receive(:stack) { |scope| expect(scope.parent_scope).to eq(parent_scope) }
+      expect(environment).to receive(:stack) { |scope| expect(scope.parent_scope).to eq(lexical_scope) }
       ast.eval(environment)
     end
 
@@ -408,11 +379,6 @@ describe Exceptional::Runtime do
   end
 
   describe PatternNode do
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(
-        lexical_scope: parent_scope,
-      )
-    end
     let(:ast) {
       PatternNode.new(
         value: HashNode.new(
@@ -451,11 +417,6 @@ describe Exceptional::Runtime do
   end
 
   describe RescueNode do
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(
-        lexical_scope: parent_scope,
-      )
-    end
     let(:pattern_node) {
       PatternNode.new(
         value: HashNode.new(
@@ -491,7 +452,7 @@ describe Exceptional::Runtime do
 
       block_value = handler.block
       expect(block_value.block_node).to eq(block)
-      expect(block_value.lexical_scope.parent_scope).to eq(parent_scope)
+      expect(block_value.lexical_scope.parent_scope).to eq(lexical_scope)
     end
   end
 
@@ -590,9 +551,6 @@ describe Exceptional::Runtime do
       HashNode.new(pair_list: [
         [StringNode.new(value: "a"), StringNode.new(value: "b")]
       ])
-    end
-    let(:environment) do
-      Exceptional::Runtime::Environment.new(lexical_scope: parent_scope)
     end
 
     it "returns a HashMap value" do
