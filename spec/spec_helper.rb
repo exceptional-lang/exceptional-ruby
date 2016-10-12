@@ -56,6 +56,14 @@ module TokensHelper
     [:RBRACE, "}"]
   end
 
+  def t_lbracket
+    [:LBRACKET, "["]
+  end
+
+  def t_rbracket
+    [:RBRACKET, "]"]
+  end
+
   def t_plus
     [:PLUS, :+]
   end
@@ -78,6 +86,10 @@ module TokensHelper
 
   def t_comma
     [:COMMA, ","]
+  end
+
+  def t_period
+    [:PERIOD, "."]
   end
 
   def t_hashrocket

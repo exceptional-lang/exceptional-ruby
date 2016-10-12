@@ -66,24 +66,24 @@ racc_action_default = [
    -47,   -19,   -18,   -22,   -32 ]
 
 racc_goto_table = [
-     1,    15,    19,    15,    19,    49,    64,    53,    47,    35,
-    31,    61,    62,    15,    59,    52,    67,    55,    56,    57,
-    33,   nil,    15,    19,   nil,    63,   nil,   nil,   nil,    44,
-   nil,   nil,   nil,   nil,   nil,   nil,    58,   nil,    83,    84,
-    15,    60,   nil,   nil,   nil,   nil,   nil,    66,    82,    80,
+     1,    15,    19,    15,    19,    49,    53,    35,    47,    31,
+    64,    61,    62,    15,    59,    52,    67,    55,    56,    57,
+    33,   nil,    15,    19,   nil,    63,   nil,   nil,    44,   nil,
+   nil,   nil,   nil,   nil,    58,   nil,   nil,   nil,   nil,   nil,
+    15,    60,    83,    84,   nil,   nil,    66,    82,   nil,    80,
     79,   nil,    47,   nil,    72,    15,    19,    63,    63 ]
 
 racc_goto_check = [
-     1,    15,    20,    15,    20,    25,    17,    10,    13,    12,
-     3,    19,    19,    15,    16,     8,    19,     8,    18,    18,
-     9,   nil,    15,    20,   nil,    13,   nil,   nil,   nil,     3,
-   nil,   nil,   nil,   nil,   nil,   nil,    12,   nil,    17,    17,
-    15,    15,   nil,   nil,   nil,   nil,   nil,    20,    10,    25,
+     1,    15,    20,    15,    20,    25,    10,    12,    13,     3,
+    17,    19,    19,    15,    16,     8,    19,     8,    18,    18,
+     9,   nil,    15,    20,   nil,    13,   nil,   nil,     3,   nil,
+   nil,   nil,   nil,   nil,    12,   nil,   nil,   nil,   nil,   nil,
+    15,    15,    17,    17,   nil,   nil,    15,    10,   nil,    25,
     13,   nil,    13,   nil,     1,    15,    20,    13,    13 ]
 
 racc_goto_pointer = [
-   nil,     0,   nil,     8,   nil,   nil,   nil,   nil,   -17,    11,
-   -26,   nil,    -3,   -18,   nil,     1,   -26,   -37,   -19,   -30,
+   nil,     0,   nil,     7,   nil,   nil,   nil,   nil,   -17,    11,
+   -27,   nil,    -5,   -18,   nil,     1,   -26,   -33,   -19,   -30,
      2,   nil,   nil,   nil,   nil,   -21,   nil ]
 
 racc_goto_default = [
@@ -132,8 +132,8 @@ racc_reduce_table = [
   1, 53, :_reduce_none,
   1, 53, :_reduce_none,
   1, 52, :_reduce_none,
-  3, 52, :_reduce_none,
-  4, 52, :_reduce_none,
+  3, 52, :_reduce_40,
+  4, 52, :_reduce_41,
   1, 56, :_reduce_none,
   1, 56, :_reduce_none,
   3, 40, :_reduce_44,
@@ -463,9 +463,19 @@ module_eval(<<'.,.,', 'exceptional.y', 99)
 
 # reduce 39 omitted
 
-# reduce 40 omitted
+module_eval(<<'.,.,', 'exceptional.y', 111)
+  def _reduce_40(val, _values, result)
+     result = Ast::HashAccessNode.new(receiver: val[0], property: Ast::StringNode.new(value: val[2].name) ) 
+    result
+  end
+.,.,
 
-# reduce 41 omitted
+module_eval(<<'.,.,', 'exceptional.y', 112)
+  def _reduce_41(val, _values, result)
+     result = Ast::HashAccessNode.new(receiver: val[0], property: val[2]) 
+    result
+  end
+.,.,
 
 # reduce 42 omitted
 

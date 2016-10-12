@@ -15,6 +15,9 @@ describe Exceptional::Runtime do
       parent_scope: parent_scope,
     )
   end
+  let(:environment) do
+    Exceptional::Runtime::Environment.new(lexical_scope: lexical_scope)
+  end
 
   # it "can evaluate some stuff" do
   #   BlockNode.new(
@@ -597,6 +600,26 @@ describe Exceptional::Runtime do
       expect(value).to eq(v_hashmap(
         v_char_string("a") => v_char_string("b")
       ))
+    end
+  end
+
+  describe HashAccessNode do
+    let(:ast) do
+      HashAccessNode.new(
+        receiver: IdentifierNode.new(name: "toto"),
+        property: StringNode.new(value: "titi"),
+      )
+    end
+
+    before do
+      parent_scope.local_set(
+        "toto", v_hashmap(v_char_string("titi") => v_number(1))
+      )
+    end
+
+    it "returns the value" do
+      value = ast.eval(environment)
+      expect(value).to eq(v_number(1))
     end
   end
 end

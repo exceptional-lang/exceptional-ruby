@@ -276,4 +276,52 @@ describe Exceptional::Parser do
       )
     )
   end
+
+  it "parses hash access via dot-syntax" do
+    tokens = [
+      t_identifier("toto"),
+      t_period,
+      t_identifier("titi"),
+      t_period,
+      t_identifier("tutu"),
+    ]
+    expect(described_class.parse(tokens)).to eq(
+      BlockNode.new(
+        expressions: [
+          HashAccessNode.new(
+            receiver: HashAccessNode.new(
+              receiver: IdentifierNode.new(name: "toto"),
+              property: StringNode.new(value: "titi"),
+            ),
+            property: StringNode.new(value: "tutu"),
+          ),
+        ]
+      )
+    )
+  end
+
+  it "parses hash access via square brackets-syntax" do
+    tokens = [
+      t_identifier("toto"),
+      t_lbracket,
+      t_identifier("titi"),
+      t_rbracket,
+      t_lbracket,
+      t_string("tutu"),
+      t_rbracket,
+    ]
+    expect(described_class.parse(tokens)).to eq(
+      BlockNode.new(
+        expressions: [
+          HashAccessNode.new(
+            receiver: HashAccessNode.new(
+              receiver: IdentifierNode.new(name: "toto"),
+              property: IdentifierNode.new(name: "titi"),
+            ),
+            property: StringNode.new(value: "tutu"),
+          ),
+        ]
+      )
+    )
+  end
 end

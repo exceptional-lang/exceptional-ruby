@@ -8,6 +8,7 @@ module Exceptional
     require "exceptional/ast/call_node"
     require "exceptional/ast/function_node"
     require "exceptional/ast/hash_node"
+    require "exceptional/ast/hash_access_node"
     require "exceptional/ast/identifier_node"
     require "exceptional/ast/local_assign_node"
     require "exceptional/ast/number_node"

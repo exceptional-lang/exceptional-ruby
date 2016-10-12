@@ -109,8 +109,8 @@ rule
 
   PropertyAccess
   : Receiver
-  | Receiver PERIOD PropertyAccess
-  | Receiver LBRACKET PrimaryStatement RBRACKET
+  | Receiver PERIOD Identifier { result = Ast::HashAccessNode.new(receiver: val[0], property: Ast::StringNode.new(value: val[2].name) ) }
+  | Receiver LBRACKET PrimaryStatement RBRACKET { result = Ast::HashAccessNode.new(receiver: val[0], property: val[2]) }
   ;
 
   Receiver
