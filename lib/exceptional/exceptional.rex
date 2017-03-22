@@ -37,6 +37,7 @@ rule
   end { [:END, text] }
   raise { [:RAISE, text] }
   rescue { [:RESCUE, text] }
+  import { [:IMPORT, text] }
 
   {IDENTIFIER} { [:IDENTIFIER, text] }
   {NUMBER} { [:NUMBER, text.to_i] }

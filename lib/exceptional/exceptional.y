@@ -1,6 +1,6 @@
 class Exceptional::GeneratedParser
 
-token LET DEF DO END RAISE RESCUE
+token LET DEF DO END RAISE RESCUE IMPORT
 token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET
 token COMMA PERIOD HASHROCKET
 token STRING IDENTIFIER NUMBER
@@ -58,6 +58,11 @@ rule
   : AdditionStatement
   | FunctionStatement
   | Identifier EQ NonlocalAssignmentStatement { result = Ast::AssignNode.new(binding_name: val[0], value: val[2]) }
+  | ImportStatement
+  ;
+
+  ImportStatement
+  : IMPORT LPAREN Value RPAREN { result = Ast::ImportNode.new(name: val[2]) }
   ;
 
   FunctionStatement

@@ -44,7 +44,7 @@ module Exceptional
         end
 
         def self.bindings
-          {}
+          {}.freeze
         end
       end
     end

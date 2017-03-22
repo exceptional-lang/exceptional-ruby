@@ -28,6 +28,10 @@ module TokensHelper
     [:RAISE, "raise"]
   end
 
+  def t_import
+    [:IMPORT, "import"]
+  end
+
   def t_identifier(name)
     [:IDENTIFIER, name]
   end

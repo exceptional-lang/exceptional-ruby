@@ -99,7 +99,7 @@ describe Exceptional::Runtime do
     let(:ast) do
       LocalAssignNode.new(
         binding_name: IdentifierNode.new(name: "hello"),
-        value: string
+        value: string,
       )
     end
 
@@ -578,6 +578,54 @@ describe Exceptional::Runtime do
     it "returns the value" do
       value = ast.eval(environment)
       expect(value).to eq(v_number(1))
+    end
+  end
+
+  describe ImportNode do
+    let(:ast) do
+      LocalAssignNode.new(
+        binding_name: IdentifierNode.new(name: "a"),
+        value: ImportNode.new(name: filename),
+      )
+    end
+    let(:filename) do
+      StringNode.new(value: "toto")
+    end
+
+    context "when the file doesn't export anything" do
+      before do
+        allow(File).to receive(:read).and_call_original
+        allow(File).to receive(:read)
+          .with(Pathname.new(".")
+          .join("toto.!"))
+          .and_return('let a = 1')
+      end
+
+      it "returns an empty hash" do
+        ast.eval(environment)
+        expect(lexical_scope.get("a")).to eq(v_hashmap({}))
+      end
+    end
+
+    context "when the file exports a value" do
+      it "imports the value into the binding" do
+        allow(File).to receive(:read).and_call_original
+        allow(File).to receive(:read)
+          .with(Pathname.new(".")
+          .join("toto.!"))
+          .and_return('raise({ "export" => { "a" => "b" } })')
+
+        ast.eval(environment)
+        expect(lexical_scope.get("a")).to eq(
+          v_hashmap(
+            v_char_string("a") => v_char_string("b"),
+          )
+        )
+      end
+    end
+
+    context "when the load path is redefined" do
+      it "uses the load path"
     end
   end
 end

@@ -2,6 +2,9 @@ require "spec_helper"
 
 include ValuesHelper
 describe Exceptional do
+  let(:ast) { Exceptional.parse(code) }
+  let(:env) { Exceptional.new_environment }
+
   context "simple case" do
     let(:code) {
       <<-SOURCE
@@ -21,9 +24,6 @@ describe Exceptional do
       SOURCE
     }
 
-    let(:ast) { Exceptional.parse(code) }
-    let(:env) { Exceptional.new_environment }
-
     it "works" do
       ast.eval(env)
       expect(env.lexical_scope.get("a")).to eq(v_char_string("x"))
@@ -33,7 +33,7 @@ describe Exceptional do
 
   context "fibonacci" do
     let(:code) {
-      <<-SOURCE
+      <<-source
         let fib = def(k) do
           rescue({ "m" => m, "k" => 0 }) do
             raise({ "result" => m })
@@ -53,15 +53,37 @@ describe Exceptional do
           fib(6)
         end
         setup()
-      SOURCE
+      source
     }
-
-    let(:ast) { Exceptional.parse(code) }
-    let(:env) { Exceptional.new_environment }
 
     it "works" do
       ast.eval(env)
       expect(env.lexical_scope.get("res")).to eq(v_number(8))
+    end
+  end
+
+  context "io" do
+    describe "read" do
+      let(:code) {
+        <<-source
+          let io = import("io")
+          let content = {}
+          rescue({ "io" => file }) do
+            content = file
+          end
+          io.read("toto.txt")
+        source
+      }
+
+      it "works" do
+        allow(File).to receive(:read).and_call_original
+        allow(File).to receive(:read)
+          .with("toto.txt")
+          .and_return("file content")
+        ast.eval(env)
+        binding.pry
+        expect(env.lexical_scope.get("content")).to eq(v_char_string("file content"))
+      end
     end
   end
 end

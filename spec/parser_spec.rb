@@ -324,4 +324,20 @@ describe Exceptional::Parser do
       )
     )
   end
+
+  it "parses import calls" do
+    tokens = [
+      t_import,
+      t_lparen,
+      t_string("test"),
+      t_rparen,
+    ]
+    expect(described_class.parse(tokens)).to eq(
+      BlockNode.new(
+        expressions: [
+          ImportNode.new(name: StringNode.new(value: "test")),
+        ],
+      )
+    )
+  end
 end

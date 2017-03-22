@@ -10,6 +10,7 @@ module Exceptional
     require "exceptional/ast/hash_node"
     require "exceptional/ast/hash_access_node"
     require "exceptional/ast/identifier_node"
+    require "exceptional/ast/import_node"
     require "exceptional/ast/local_assign_node"
     require "exceptional/ast/number_node"
     require "exceptional/ast/pair_list_node"
